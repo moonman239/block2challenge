@@ -7,6 +7,10 @@
             {
                 return (x.rating > y.rating) ? -1 : 1;
             }
+            function distanceFunction(x,y)
+            {
+                return (x.distance < y.distance) ? -1 : 1;
+            }
             function displayRestaurants(sortFunction = ratingFunction)
             {
                 restaurants = restaurants.sort(sortFunction);
@@ -51,10 +55,21 @@
             function getLocation() {
                 navigator.geolocation.getCurrentPosition(locationReceived)
             }
+            function changeSort(select)
+            {
+                if (select.value === "rating")
+                    displayRestaurants(ratingFunction);
+                else
+                    displayRestaurants(distanceFunction);
+            }
         </script>
     </head>
     <body>
         <button onclick="getLocation()" title="">Get Location</button>
+        <select onchange="changeSort(this)">
+            <option value="rating">Rating</option>
+            <option value="distance">Distance</option>
+        </select>
         <table id="restaurants">
             </table>
     </body>
