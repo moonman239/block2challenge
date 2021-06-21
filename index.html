@@ -28,7 +28,7 @@
                     const description = restaurants[i].description;
                     const distance = restaurants[i].distance_string;
                     const rating = restaurants[i].rating;
-                    const td1 = "<td>" + nameHeader + addressString + "</td>"
+                    const td1 = "<td>" + nameHeader + addressString + "<br><br>" + description + "</td>"
                     const td2 = "<td>" + distance + "</td>";
                     const td3 = "<td>" + rating + "</td>";
                     table.innerHTML += td1 + td2 + td3;
