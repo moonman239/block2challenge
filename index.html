@@ -2,11 +2,11 @@
     <head>
         <title>The Foodie Traveler</title>
         <script>
-            function displayRestaurants(json)
+            var restaurants = [];
+            function displayRestaurants()
             {
                 const table = document.getElementById("restaurants");
                 table.innerHTML = "";
-                const restaurants = json["data"];
                 for (const i in restaurants)
                 {
                     console.log(restaurants[i])
@@ -37,7 +37,10 @@
                 })
                     .then(response => response.json());
                     _fetch.catch(alert);
-                    _fetch.then(json => displayRestaurants(json))
+                    _fetch.then(json => {
+                        restaurants = json["data"];
+                        displayRestaurants();
+                    })
             }
             function getLocation() {
                 navigator.geolocation.getCurrentPosition(locationReceived)
