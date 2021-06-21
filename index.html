@@ -2,16 +2,51 @@
     <head>
         <title>The Foodie Traveler</title>
         <script>
-            function success(position)
+            function displayRestaurants(json)
             {
-                alert(position.coords.latitude + " " + position.coords.longitude);
+                const table = document.getElementById("restaurants");
+                table.innerHTML = "";
+                const restaurants = json["data"];
+                for (const i in restaurants)
+                {
+                    console.log(restaurants[i])
+                    const name = restaurants[i].name;
+                    if (name === undefined)
+                    {
+                        continue;
+                    }
+                    const nameHeader = "<h3>" + name + "</h3>";
+                    const addressString = restaurants[i].address;
+                    const description = restaurants[i].description;
+                    const distance = restaurants[i].distance_string;
+                    const td1 = "<td>" + nameHeader + addressString + "</td>"
+                    const td2 = "<td>" + distance + "</td>";
+                    table.innerHTML += td1 + td2;
+                }
+            }
+            function locationReceived(position)
+            {
+
+                console.log("location received.");
+               let _fetch = fetch("https://travel-advisor.p.rapidapi.com/restaurants/list-by-latlng?latitude=" + position.coords.latitude + "&longitude=" + position.coords.longitude + "&currency=USD&open_now=false&lunit=mi&lang=en_US", {
+                    "method": "GET",
+                    "headers": {
+                        "x-rapidapi-key": "1167886aeemsh061eed0f807e535p17f6aajsnc70cd0d6bdaa",
+                        "x-rapidapi-host": "travel-advisor.p.rapidapi.com"
+                    }
+                })
+                    .then(response => response.json());
+                    _fetch.catch(alert);
+                    _fetch.then(json => displayRestaurants(json))
             }
             function getLocation() {
-                navigator.geolocation.getCurrentPosition(success)
+                navigator.geolocation.getCurrentPosition(locationReceived)
             }
         </script>
     </head>
     <body>
         <button onclick="getLocation()" title="">Get Location</button>
+        <table id="restaurants">
+            </table>
     </body>
 </html>
