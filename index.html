@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <title>The Foodie Traveler</title>
+        <script>
+            function success(position)
+            {
+                alert(position.coords.latitude + " " + position.coords.longitude);
+            }
+            function getLocation() {
+                navigator.geolocation.getCurrentPosition(success)
+            }
+        </script>
+    </head>
+    <body>
+        <button onclick="getLocation()" title="">Get Location</button>
+    </body>
+</html>
