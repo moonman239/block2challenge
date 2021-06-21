@@ -3,13 +3,17 @@
         <title>The Foodie Traveler</title>
         <script>
             var restaurants = [];
-            function displayRestaurants()
+            function ratingFunction(x,y)
             {
+                return (x.rating > y.rating) ? -1 : 1;
+            }
+            function displayRestaurants(sortFunction = ratingFunction)
+            {
+                restaurants = restaurants.sort(sortFunction);
                 const table = document.getElementById("restaurants");
                 table.innerHTML = "";
                 for (const i in restaurants)
                 {
-                    console.log(restaurants[i])
                     const name = restaurants[i].name;
                     if (name === undefined)
                     {
@@ -19,9 +23,11 @@
                     const addressString = restaurants[i].address;
                     const description = restaurants[i].description;
                     const distance = restaurants[i].distance_string;
+                    const rating = restaurants[i].rating;
                     const td1 = "<td>" + nameHeader + addressString + "</td>"
                     const td2 = "<td>" + distance + "</td>";
-                    table.innerHTML += td1 + td2;
+                    const td3 = "<td>" + rating + "</td>";
+                    table.innerHTML += td1 + td2 + td3;
                 }
             }
             function locationReceived(position)
