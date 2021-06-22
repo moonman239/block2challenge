@@ -6,6 +6,7 @@
             var userPosition = undefined;
             const apiKey = "1167886aeemsh061eed0f807e535p17f6aajsnc70cd0d6bdaa";
             var userPosition = undefined;
+            var sortingFunction = ratingFunction; // Specifies how the restaurants are to be sorted.
             function ratingFunction(x,y)
             {
                 return (x.rating > y.rating) ? -1 : 1;
@@ -14,9 +15,9 @@
             {
                 return (x.distance < y.distance) ? -1 : 1;
             }
-            function displayRestaurants(sortFunction = ratingFunction)
+            function displayRestaurants()
             {
-                restaurants = restaurants.sort(sortFunction);
+                restaurants = restaurants.sort(sortingFunction);
                 const table = document.getElementById("restaurants");
                 table.innerHTML = "";
                 for (const i in restaurants)
@@ -95,9 +96,9 @@
             function changeSort(select)
             {
                 if (select.value === "rating")
-                    displayRestaurants(ratingFunction);
+                    sortingFunction = ratingFunction;
                 else
-                    displayRestaurants(distanceFunction);
+                    sortingFunction = distanceFunction;
             }
             async function go() {
                 if (document.getElementById("address").value !== "Current Location")
