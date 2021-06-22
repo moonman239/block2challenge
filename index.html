@@ -71,13 +71,22 @@
                     displayRestaurants(distanceFunction);
             }
         </script>
+        <style>
+            #header {
+                position: fixed;
+                top: 0px;
+            }
+        </style>
     </head>
     <body>
-        <button onclick="getLocation()" title="">Get Location</button>
+        <div id="header">
+        <input type="text" id="query" placeholder="Search by cuisine, etc."><button onclick="getLocation()" title="">Get Location</button>
+        
         <select onchange="changeSort(this)">
             <option value="rating">Rating</option>
             <option value="distance">Distance</option>
         </select>
+        </div>
         <table id="restaurants">
             </table>
     </body>
