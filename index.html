@@ -3,6 +3,8 @@
         <title>The Foodie Traveler</title>
         <script>
             var restaurants = [];
+            var userPosition = undefined;
+            const apiKey = "1167886aeemsh061eed0f807e535p17f6aajsnc70cd0d6bdaa";
             function ratingFunction(x,y)
             {
                 return (x.rating > y.rating) ? -1 : 1;
@@ -41,28 +43,60 @@
                     table.innerHTML += td1 + td2 + td3;
                 }
             }
-            function locationReceived(position)
+            function fetchAndDisplayRestaurants(coords)
             {
-
-                console.log("location received.");
-               let _fetch = fetch("https://travel-advisor.p.rapidapi.com/restaurants/list-by-latlng?latitude=" + position.coords.latitude + "&longitude=" + position.coords.longitude + "&currency=USD&open_now=false&lunit=mi&lang=en_US", {
+                if (coords.latitude === undefined || coords.longitude === undefined)
+                {
+                    throw new Error("undefined coordinates.");
+                }
+                let _fetch = fetch("https://travel-advisor.p.rapidapi.com/restaurants/list-by-latlng?latitude=" + coords.latitude + "&longitude=" + coords.longitude + "&currency=USD&open_now=false&lunit=mi&lang=en_US", {
                     "method": "GET",
                     "headers": {
-                        "x-rapidapi-key": "1167886aeemsh061eed0f807e535p17f6aajsnc70cd0d6bdaa",
+                        "x-rapidapi-key": apiKey,
                         "x-rapidapi-host": "travel-advisor.p.rapidapi.com"
                     }
                 })
-                    .then(response => response.json());
-                    _fetch.catch(alert);
-                    _fetch.then(json => {
-                        restaurants = json["data"];
-                        console.log(restaurants);
-                        displayRestaurants();
-                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        else {
+                            return Promise.reject(response.statusText);
+                        }});
+                _fetch.catch(alert);
+                _fetch.then(json => {
+                    restaurants = json["data"];
+                    console.log(restaurants);
+                    displayRestaurants();
+                })
             }
             function getLocation() {
-                navigator.geolocation.getCurrentPosition(locationReceived)
+                navigator.geolocation.getCurrentPosition(position => fetchAndDisplayRestaurants(position.coords));
             }
+            function geocodeAddress(address)
+            {
+                let responsePromise = fetch("https://forward-reverse-geocoding.p.rapidapi.com/v1/search?q=" + address + "%20USA&format=json&accept-language=en&polygon_threshold=0.0", {
+                    "method": "GET",
+                    "headers": {
+                        "x-rapidapi-key": apiKey,
+                        "x-rapidapi-host": "forward-reverse-geocoding.p.rapidapi.com"
+                    }
+                })
+                    .then(response => {
+                        if (response.ok)
+                        {
+                            return response.json();
+                        }
+                        else {
+                            return Promise.reject();
+                        }
+                    });
+                    responsePromise.catch(err => {
+                        alert(err);
+                    });
+                    responsePromise.then(pos => fetchAndDisplayRestaurants({latitude: pos[0].lat, longitude: pos[0].lon}));
+            }
+            geocodeAddress("2409 las hadas ct fairfield ca");
             function changeSort(select)
             {
                 if (select.value === "rating")
