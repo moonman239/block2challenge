@@ -28,9 +28,16 @@
                     const description = restaurants[i].description;
                     const distance = restaurants[i].distance_string;
                     const rating = restaurants[i].rating;
-                    const td1 = "<td>" + nameHeader + addressString + "<br><br>" + description + "</td>"
+                    let openNow = restaurants[i].open_now_text;
+                    if (openNow === undefined)
+                    {
+                        openNow = "";
+                    }
+                    const priceText = restaurants[i].price_level;
+                    const td1 = "<td>" + nameHeader + addressString + "<br><br>" + openNow + "<br><br>" + description + "</td>"
                     const td2 = "<td>" + distance + "</td>";
                     const td3 = "<td>" + rating + "</td>";
+                    const td4 = "<td>" + priceText + "</td>";
                     table.innerHTML += td1 + td2 + td3;
                 }
             }
@@ -49,6 +56,7 @@
                     _fetch.catch(alert);
                     _fetch.then(json => {
                         restaurants = json["data"];
+                        console.log(restaurants);
                         displayRestaurants();
                     })
             }
