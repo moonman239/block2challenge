@@ -51,6 +51,7 @@
                 {
                     throw new Error("undefined coordinates.");
                 }
+                console.log(coords.latitude + " " + coords.longitude);
                 let _fetch = fetch("https://travel-advisor.p.rapidapi.com/restaurants/list-by-latlng?latitude=" + coords.latitude + "&longitude=" + coords.longitude + "&currency=USD&open_now=false&lunit=mi&lang=en_US", {
                     "method": "GET",
                     "headers": {
@@ -89,7 +90,7 @@
                 })
                 let json = await response.json();
                 userPosition = {latitude: json[0].lat, longitude: json[0].lon};
-                fetchAndDisplayRestaurants();
+                console.log("Geocoded position: " + userPosition.latitude + " " + userPosition.longitude);
             }
             function changeSort(select)
             {
@@ -98,11 +99,10 @@
                 else
                     displayRestaurants(distanceFunction);
             }
-            function go() {
+            async function go() {
                 if (document.getElementById("address").value !== "Current Location")
-                    geocodeAddress(document.getElementById("address").value);
-                else
-                    fetchAndDisplayRestaurants();
+                   await geocodeAddress(document.getElementById("address").value);
+                fetchAndDisplayRestaurants();
             }
         </script>
         <style>
