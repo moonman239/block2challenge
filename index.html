@@ -5,6 +5,7 @@
             var restaurants = [];
             var userPosition = undefined;
             const apiKey = "1167886aeemsh061eed0f807e535p17f6aajsnc70cd0d6bdaa";
+            var userPosition = undefined;
             function ratingFunction(x,y)
             {
                 return (x.rating > y.rating) ? -1 : 1;
@@ -43,8 +44,9 @@
                     table.innerHTML += td1 + td2 + td3;
                 }
             }
-            function fetchAndDisplayRestaurants(coords)
+            function fetchAndDisplayRestaurants()
             {
+                let coords = userPosition;
                 if (coords.latitude === undefined || coords.longitude === undefined)
                 {
                     throw new Error("undefined coordinates.");
@@ -71,30 +73,23 @@
                 })
             }
             function getLocation() {
-                navigator.geolocation.getCurrentPosition(position => fetchAndDisplayRestaurants(position.coords));
+                navigator.geolocation.getCurrentPosition(position => {
+                    userPosition = position.coords;
+                });
+                document.getElementById("address").value = "Current Location";
             }
-            function geocodeAddress(address)
+            async function geocodeAddress(address)
             {
-                let responsePromise = fetch("https://forward-reverse-geocoding.p.rapidapi.com/v1/search?q=" + address + "%20USA&format=json&accept-language=en&polygon_threshold=0.0", {
+                let response = await fetch("https://forward-reverse-geocoding.p.rapidapi.com/v1/search?q=" + address + "%20USA&format=json&accept-language=en&polygon_threshold=0.0", {
                     "method": "GET",
                     "headers": {
                         "x-rapidapi-key": apiKey,
                         "x-rapidapi-host": "forward-reverse-geocoding.p.rapidapi.com"
                     }
                 })
-                    .then(response => {
-                        if (response.ok)
-                        {
-                            return response.json();
-                        }
-                        else {
-                            return Promise.reject();
-                        }
-                    });
-                    responsePromise.catch(err => {
-                        alert(err);
-                    });
-                    responsePromise.then(pos => fetchAndDisplayRestaurants({latitude: pos[0].lat, longitude: pos[0].lon}));
+                let json = await response.json();
+                userPosition = {latitude: json[0].lat, longitude: json[0].lon};
+                fetchAndDisplayRestaurants();
             }
             function changeSort(select)
             {
@@ -104,7 +99,10 @@
                     displayRestaurants(distanceFunction);
             }
             function go() {
-                geocodeAddress(document.getElementById("address").value);
+                if (document.getElementById("address").value !== "Current Location")
+                    geocodeAddress(document.getElementById("address").value);
+                else
+                    fetchAndDisplayRestaurants();
             }
         </script>
         <style>
