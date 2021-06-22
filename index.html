@@ -9,11 +9,11 @@
             var sortingFunction = ratingFunction; // Specifies how the restaurants are to be sorted.
             function ratingFunction(x,y)
             {
-                return (x.rating > y.rating) ? -1 : 1;
+                return (parseFloat(x.rating) > parseFloat(y.rating) || y.rating === undefined) ? -1 : 1;
             }
             function distanceFunction(x,y)
             {
-                return (x.distance < y.distance) ? -1 : 1;
+                return (parseFloat(x.distance) < parseFloat(y.distance) || y.distance === undefined) ? -1 : 1;
             }
             function displayRestaurants()
             {
@@ -99,6 +99,7 @@
                     sortingFunction = ratingFunction;
                 else
                     sortingFunction = distanceFunction;
+                displayRestaurants();
             }
             async function go() {
                 if (document.getElementById("address").value !== "Current Location")
@@ -120,7 +121,7 @@
     <body>
         <div id="header">
         <input type="text" id="cuisine" placeholder="Cuisine"><input id="address" placeholder="Address"><button onclick="getLocation()" title="">Get Location</button>
-        <button onclick="go()">Go</button>
+        <button onclick="go()">Search</button>
         <select onchange="changeSort(this)">
             <option value="rating">Rating</option>
             <option value="distance">Distance</option>
