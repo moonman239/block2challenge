@@ -38,11 +38,14 @@
                         openNow = "";
                     }
                     const priceText = restaurants[i].price_level;
+                    const tr = document.createElement("tr");
+                    tr.id = i;
                     const td1 = "<td>" + nameHeader + addressString + "<br><br>" + openNow + "<br><br>" + description + "</td>"
                     const td2 = "<td>" + distance + "</td>";
                     const td3 = "<td>" + rating + "</td>";
                     const td4 = "<td>" + priceText + "</td>";
-                    table.innerHTML += td1 + td2 + td3;
+                    tr.innerHTML = td1 + td2 + td3 + td4;
+                    table.appendChild(tr);
                 }
             }
             function fetchAndDisplayRestaurants()
