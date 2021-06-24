@@ -18,10 +18,9 @@
             {
                 return (parseFloat(x.distance) < parseFloat(y.distance) || y.distance === undefined) ? -1 : 1;
             }
-            function favorite(restaurantId)
+            function toggleFavorite(checkbox,restaurant)
             {
                 var favorites = JSON.parse(localStorage.getItem(favoritesKey));
-                const restaurant = restaurants[restaurantId];
                 favorites.push(restaurant);
                 localStorage.setItem(favoritesKey,JSON.stringify(favorites));
             }
@@ -53,7 +52,7 @@
                     const td2 = "<td>" + distance + "</td>";
                     const td3 = "<td>" + rating + "</td>";
                     const td4 = "<td>" + priceText + "</td>";
-                    const td5 = "<td><input type='checkbox' onchange='favorite(" + i + ")'>";
+                    const td5 = "<td><input type='checkbox' onchange='toggleFavorite(this,restaurants["+i+"])'>";
                     tr.innerHTML = td1 + td2 + td3 + td4 + td5;
                     table.appendChild(tr);
                 }
