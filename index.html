@@ -7,6 +7,9 @@
             const apiKey = "1167886aeemsh061eed0f807e535p17f6aajsnc70cd0d6bdaa";
             var userPosition = undefined;
             var sortingFunction = ratingFunction; // Specifies how the restaurants are to be sorted.
+            var favoritesKey = "favorites";
+            if (!localStorage.getItem(favoritesKey))
+                localStorage.setItem(favoritesKey,JSON.stringify([]));
             function ratingFunction(x,y)
             {
                 return (parseFloat(x.rating) > parseFloat(y.rating) || y.rating === undefined) ? -1 : 1;
@@ -14,6 +17,13 @@
             function distanceFunction(x,y)
             {
                 return (parseFloat(x.distance) < parseFloat(y.distance) || y.distance === undefined) ? -1 : 1;
+            }
+            function favorite(restaurantId)
+            {
+                var favorites = JSON.parse(localStorage.getItem(favoritesKey));
+                const restaurant = restaurants[restaurantId];
+                favorites.push(restaurant);
+                localStorage.setItem(favoritesKey,JSON.stringify(favorites));
             }
             function displayRestaurants()
             {
@@ -39,12 +49,12 @@
                     }
                     const priceText = restaurants[i].price_level;
                     const tr = document.createElement("tr");
-                    tr.id = i;
                     const td1 = "<td>" + nameHeader + addressString + "<br><br>" + openNow + "<br><br>" + description + "</td>"
                     const td2 = "<td>" + distance + "</td>";
                     const td3 = "<td>" + rating + "</td>";
                     const td4 = "<td>" + priceText + "</td>";
-                    tr.innerHTML = td1 + td2 + td3 + td4;
+                    const td5 = "<td><input type='checkbox' onchange='favorite(" + i + ")'>";
+                    tr.innerHTML = td1 + td2 + td3 + td4 + td5;
                     table.appendChild(tr);
                 }
             }
@@ -78,8 +88,10 @@
                 })
             }
             function getLocation() {
+                document.getElementById("go").disabled = true;
                 navigator.geolocation.getCurrentPosition(position => {
                     userPosition = position.coords;
+                    document.getElementById("go").disabled = false;
                 });
                 document.getElementById("address").value = "Current Location";
             }
@@ -124,7 +136,7 @@
     <body>
         <div id="header">
         <input type="text" id="cuisine" placeholder="Cuisine"><input id="address" placeholder="Address"><button onclick="getLocation()" title="">Get Location</button>
-        <button onclick="go()">Search</button>
+        <button onclick="go()" id="go">Search</button>
         <select onchange="changeSort(this)">
             <option value="rating">Rating</option>
             <option value="distance">Distance</option>
