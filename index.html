@@ -35,8 +35,9 @@
             function toggleFavorite(checkbox,restaurant)
             {
                 const indexOfFavorite = favorites.indexOfRestaurant(restaurant);
-                if (indexOfFavorite === -1)
+                if (checkbox.checked)
                 {
+                    console.log("Favoriting restaurant.");
                     // Not favorited; add to favorites.
                     favorites.push(restaurant);
                 }
@@ -44,8 +45,12 @@
                 {
                     // Favorited; remove from favorites.
                     favorites.splice(indexOfFavorite,1);
-                localStorage.setItem(favoritesKey,JSON.stringify(favorites));
                 }
+                if (displayFavorites)
+                {
+                    displayRestaurants();
+                }
+                localStorage.setItem(favoritesKey,JSON.stringify(favorites));
             }
             function isFavorite(restaurant)
             {
