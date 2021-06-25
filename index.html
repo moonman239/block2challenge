@@ -3,6 +3,7 @@
         <title>The Foodie Traveler</title>
         <script>
             var restaurants = [];
+            var favorites = [];
             var userPosition = undefined;
             const apiKey = "1167886aeemsh061eed0f807e535p17f6aajsnc70cd0d6bdaa";
             var userPosition = undefined;
@@ -10,6 +11,8 @@
             var favoritesKey = "favorites";
             if (!localStorage.getItem(favoritesKey))
                 localStorage.setItem(favoritesKey,JSON.stringify([]));
+            else
+                favorites = JSON.parse(localStorage.getItem(favoritesKey));
             function ratingFunction(x,y)
             {
                 return (parseFloat(x.rating) > parseFloat(y.rating) || y.rating === undefined) ? -1 : 1;
@@ -18,9 +21,12 @@
             {
                 return (parseFloat(x.distance) < parseFloat(y.distance) || y.distance === undefined) ? -1 : 1;
             }
+            function viewFavorites()
+            {
+                displayRestaurants(favorites);
+            }
             function toggleFavorite(checkbox,restaurant)
             {
-                let favorites = JSON.parse(localStorage.getItem(favoritesKey));
                 let indexOfFavorite = favorites.findIndex(x => x.location_id === restaurant.location_id);
                 if (indexOfFavorite === -1)
                     // Not favorited; add to favorites.
@@ -30,29 +36,29 @@
                     favorites.splice(indexOfFavorite,1);
                 localStorage.setItem(favoritesKey,JSON.stringify(favorites));
             }
-            function displayRestaurants()
+            function displayRestaurants(restaurantArray)
             {
-                restaurants = restaurants.sort(sortingFunction);
+                restaurantArray = restaurantArray.sort(sortingFunction);
                 const table = document.getElementById("restaurants");
                 table.innerHTML = "";
-                for (const i in restaurants)
+                for (const i in restaurantArray)
                 {
-                    const name = restaurants[i].name;
+                    const name = restaurantArray[i].name;
                     if (name === undefined)
                     {
                         continue;
                     }
                     const nameHeader = "<h3>" + name + "</h3>";
-                    const addressString = restaurants[i].address;
-                    const description = restaurants[i].description;
-                    const distance = restaurants[i].distance_string;
-                    const rating = restaurants[i].rating;
-                    let openNow = restaurants[i].open_now_text;
+                    const addressString = restaurantArray[i].address;
+                    const description = restaurantArray[i].description;
+                    const distance = restaurantArray[i].distance_string;
+                    const rating = restaurantArray[i].rating;
+                    let openNow = restaurantArray[i].open_now_text;
                     if (openNow === undefined)
                     {
                         openNow = "";
                     }
-                    const priceText = restaurants[i].price_level;
+                    const priceText = restaurantArray[i].price_level;
                     const tr = document.createElement("tr");
                     const td1 = "<td>" + nameHeader + addressString + "<br><br>" + openNow + "<br><br>" + description + "</td>"
                     const td2 = "<td>" + distance + "</td>";
@@ -89,7 +95,7 @@
                 _fetch.then(json => {
                     restaurants = json["data"];
                     console.log(restaurants);
-                    displayRestaurants();
+                    displayRestaurants(restaurants);
                 })
             }
             function getLocation() {
@@ -146,6 +152,7 @@
             <option value="rating">Rating</option>
             <option value="distance">Distance</option>
         </select>
+        <button onclick="viewFavorites()">View favorites</button>
         </div>
         <table id="restaurants">
             </table>
