@@ -20,8 +20,14 @@
             }
             function toggleFavorite(checkbox,restaurant)
             {
-                var favorites = JSON.parse(localStorage.getItem(favoritesKey));
-                favorites.push(restaurant);
+                let favorites = JSON.parse(localStorage.getItem(favoritesKey));
+                let indexOfFavorite = favorites.findIndex(x => x.location_id === restaurant.location_id);
+                if (indexOfFavorite === -1)
+                    // Not favorited; add to favorites.
+                    favorites.push(restaurant);
+                else
+                    // Favorited; remove from favorites.
+                    favorites.splice(indexOfFavorite,1);
                 localStorage.setItem(favoritesKey,JSON.stringify(favorites));
             }
             function displayRestaurants()
