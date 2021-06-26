@@ -48,8 +48,10 @@ export class RestaurantList
         else if (by === "distance")
             this.#array = this.#array.sort(RestaurantList.distanceFunction);
     }
-    * generator()
+    // gets 'count' restaurants starting at 'start'
+    getRestaurants(count,start=0)
     {
-        yield this.#array[this.i]; 
+        // TODO: code for the case when there are more restaurants than the API is returning.
+        return this.#array.slice(start,start+count);
     }
 }
