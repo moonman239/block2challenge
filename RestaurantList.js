@@ -4,6 +4,14 @@ import fetch from "node-fetch";
 
 export class RestaurantList
 {
+    static ratingFunction(x,y)
+            {
+                return (parseFloat(x.rating) > parseFloat(y.rating) || y.rating === undefined) ? -1 : 1;
+            }
+    static distanceFunction(x,y)
+        {
+            return (parseFloat(x.distance) < parseFloat(y.distance) || y.distance === undefined) ? -1 : 1;
+        }
     constructor(restaurantArray)
     {
         this.array = restaurantArray;
@@ -31,6 +39,13 @@ export class RestaurantList
             {
                 console.error(error);
             }
+    }
+    sort(by)
+    {
+        if (by === "rating")
+            this.array = this.array.sort(RestaurantList.ratingFunction);
+        else if (by === "distance")
+            this.array = this.array.sort(RestaurantList.distanceFunction);
     }
     * generator()
     {
