@@ -1,0 +1,30 @@
+{
+  "type": "module",
+  "name": "block2challenge",
+  "version": "1.0.0",
+  "description": "The Foodie Traveler",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moonman239/block2challenge.git"
+  },
+  "keywords": [
+    "the",
+    "foodie",
+    "traveler",
+    "recipes",
+    "javascript"
+  ],
+  "author": "Montana Kent Burr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moonman239/block2challenge/issues"
+  },
+  "homepage": "https://github.com/moonman239/block2challenge#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  }
+}
