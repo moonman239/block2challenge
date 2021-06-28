@@ -21,11 +21,12 @@ export async function getLocation()
                 let response = await fetch("https://forward-reverse-geocoding.p.rapidapi.com/v1/search?q=" + address + "%20USA&format=json&accept-language=en&polygon_threshold=0.0", {
                     "method": "GET",
                     "headers": {
-                        "x-rapidapi-key": apiKey,
+                        "x-rapidapi-key": "1167886aeemsh061eed0f807e535p17f6aajsnc70cd0d6bdaa",
                         "x-rapidapi-host": "forward-reverse-geocoding.p.rapidapi.com"
                     }
                 })
                 let json = await response.json();
-                userPosition = {latitude: json[0].lat, longitude: json[0].lon};
+                const userPosition = {latitude: json[0].lat, longitude: json[0].lon};
                 console.log("Geocoded position: " + userPosition.latitude + " " + userPosition.longitude);
+                return userPosition;
             }
