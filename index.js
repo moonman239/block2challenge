@@ -12,6 +12,8 @@ window.go = async () => {
     window.restaurantList = await RestaurantList.fetchFromLatitudeLongitude(userPosition.coords.latitude,userPosition.coords.longitude);
     if (restaurantList === undefined)
         throw new Error("No restaurant list was returned.");
+    // Default to sorting by the selected sort.
+    restaurantList.sort(document.getElementById("sort").value);
     renderRestaurantList(restaurantList,restaurantsDiv);
 }
 window.changeSort = function(select)

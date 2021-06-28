@@ -26,7 +26,8 @@ export async function getLocation()
                     }
                 })
                 let json = await response.json();
-                const userPosition = {latitude: json[0].lat, longitude: json[0].lon};
-                console.log("Geocoded position: " + userPosition.latitude + " " + userPosition.longitude);
+                const userPosition = {coords : {latitude: json[0].lat, longitude: json[0].lon}};
+                if (userPosition.coords.latitude === undefined || userPosition.coords.longitude === undefined)
+                    throw new Error("Undefined latitude and longitude.");
                 window.userPosition = userPosition;
             }
