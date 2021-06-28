@@ -22,10 +22,12 @@ export class RestaurantList
     }
     static fromStorage(key)
     {
+        const array = JSON.parse(localStorage.getItem(key));
+        return new RestaurantList(array);
     }
     saveToStorage(key)
     {
-
+        localStorage.setItem(key,JSON.stringify(this.#array));
     }
     addRestaurant(restaurant)
     {

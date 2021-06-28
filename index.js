@@ -56,7 +56,15 @@ async function test4()
     const restaurants = restaurantList.getRestaurants(30);
     restaurants.map(restaurant => favorites.addRestaurant(restaurant));
     restaurants.map(restaurant => console.assert(favorites.includes(restaurant)));
-
+    favorites.saveToStorage("favorites");
+    const fetchedFavorites = RestaurantList.fromStorage("favorites");
+    if (favorites.getRestaurants(Infinity).length !== fetchedFavorites.getRestaurants(Infinity).length)
+        throw new Error("Mismatched length: " + favorites.getRestaurants(Infinity).length + "," + fetchedFavorites.getRestaurants(Infinity).length);
+    for (const i in favorites)
+    {
+        if (favorites[i].location_id !== fetchedFavorites[i].location_id)
+            throw new Error("Mismatched restaurants.");
+    }
     console.log("Test 4 passed.");
 }
 test1();
