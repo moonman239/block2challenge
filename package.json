@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/moonman239/block2challenge#readme",
   "dependencies": {
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "node-localstorage": "^2.2.1"
   }
 }

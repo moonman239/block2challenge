@@ -1,5 +1,7 @@
 const baseURL = "https://travel-advisor.p.rapidapi.com/restaurants/list-by-latlng?latitude=";
  const apiKey = "1167886aeemsh061eed0f807e535p17f6aajsnc70cd0d6bdaa";
+import { LocalStorage } from "node-localstorage";
+var localStorage = new LocalStorage("./favorites");
 import fetch from "node-fetch";
 
 export class RestaurantList
@@ -17,6 +19,18 @@ export class RestaurantList
     {
         this.#array = restaurantArray;
         this.i = 0;
+    }
+    static fromStorage(key)
+    {
+    }
+    saveToStorage(key)
+    {
+
+    }
+    addRestaurant(restaurant)
+    {
+        this.#array.push(restaurant);
+        console.log("Adding restaurant with location id " + restaurant.location_id);
     }
     static async fetchFromLatitudeLongitude(latitude,longitude)
     {
@@ -40,6 +54,14 @@ export class RestaurantList
             {
                 console.error(error);
             }
+    }
+    includes(restaurant)
+    {
+        console.log("Checking for restaurant with id " + restaurant.location_id);
+        if (restaurant.location_id === undefined)
+            throw new Error("Undefined location id.");
+        const index = this.#array.findIndex(x => x.location_id === restaurant.location_id);
+        return index > -1;
     }
     sort(by)
     {
