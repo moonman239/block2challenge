@@ -13,7 +13,7 @@ export async function getLocation()
     console.log("Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude);
      document.getElementById("address").value = "Current Location";
      document.getElementById("go").disabled = false;
-     return position;
+     window.userPosition = position;
             }
 
             export async function geocodeAddress(address)
@@ -28,5 +28,5 @@ export async function getLocation()
                 let json = await response.json();
                 const userPosition = {latitude: json[0].lat, longitude: json[0].lon};
                 console.log("Geocoded position: " + userPosition.latitude + " " + userPosition.longitude);
-                return userPosition;
+                window.userPosition = userPosition;
             }

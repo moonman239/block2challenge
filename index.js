@@ -7,9 +7,10 @@ window.geocodeAddress = geocodeAddress;
 window.go = async () => {
     const restaurantsDiv = document.getElementById("restaurants");
     console.log(restaurantsDiv);
-                renderRestaurantList(new RestaurantList(),restaurantsDiv);
-                
-                if (document.getElementById("address").value !== "Current Location")
-                   await geocodeAddress(document.getElementById("address").value);
-                /*fetchAndDisplayRestaurants();*/
-            }
+    if (document.getElementById("address").value !== "Current Location")
+        await geocodeAddress(document.getElementById("address").value);
+    const restaurantList = await RestaurantList.fetchFromLatitudeLongitude(userPosition.coords.latitude,userPosition.coords.longitude);
+    if (restaurantList === undefined)
+        throw new Error("No restaurant list was returned.");
+    renderRestaurantList(restaurantList,restaurantsDiv);
+}
