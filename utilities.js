@@ -1,14 +1,22 @@
-function getLocation() 
+function navigationPromise()
 {
-document.getElementById("go").disabled = true;
-                navigator.geolocation.getCurrentPosition(position => {
-                    userPosition = position.coords;
-                    document.getElementById("go").disabled = false;
-                });
-                document.getElementById("address").value = "Current Location";
+    return new Promise((resolve,reject) =>
+    {
+        navigator.geolocation.getCurrentPosition(resolve,reject);
+    })
+}
+
+export async function getLocation() 
+{
+    document.getElementById("go").disabled = true;
+    const position = await navigationPromise();
+    console.log("Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude);
+     document.getElementById("address").value = "Current Location";
+     document.getElementById("go").disabled = false;
+     return position;
             }
-            
-            async function geocodeAddress(address)
+
+            export async function geocodeAddress(address)
             {
                 let response = await fetch("https://forward-reverse-geocoding.p.rapidapi.com/v1/search?q=" + address + "%20USA&format=json&accept-language=en&polygon_threshold=0.0", {
                     "method": "GET",
