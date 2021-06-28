@@ -1,8 +1,5 @@
 const baseURL = "https://travel-advisor.p.rapidapi.com/restaurants/list-by-latlng?latitude=";
  const apiKey = "1167886aeemsh061eed0f807e535p17f6aajsnc70cd0d6bdaa";
-import { LocalStorage } from "node-localstorage";
-var localStorage = new LocalStorage("./favorites");
-import fetch from "node-fetch";
 
 export class RestaurantList
 {
