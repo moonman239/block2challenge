@@ -8,7 +8,10 @@ export default function renderRestaurantList(restaurantList,parentElement)
     for (const i in listToDisplay)
     {
         const tr = document.createElement("tr");
-        tr.innerHTML = "<td>" + listToDisplay[i].name + "</td>";
+        tr.innerHTML += "<td><h3>" + listToDisplay[i].name
+        + "</h3>" + listToDisplay[i].description + "</td>";
+        tr.innerHTML += "<td>" + listToDisplay[i].rating + "</td>";
+        tr.innerHTML += "<td>" + listToDisplay[i].distance + " km</td>";
         table.appendChild(tr);
     }
 }
