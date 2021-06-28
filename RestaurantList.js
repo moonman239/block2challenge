@@ -54,12 +54,22 @@ export class RestaurantList
                 console.error(error);
             }
     }
+    #findRestaurantWithId(restaurantId)
+    {
+        return this.#array.findIndex(x => x.location_id === restaurantId);
+    }
+    restaurantAt(restaurant_id)
+    {
+        const index = this.#findRestaurantWithId(restaurant_id);
+        console.log("Restaurant index: " + index);
+        return this.#array[index];
+    }
     includes(restaurant)
     {
         console.log("Checking for restaurant with id " + restaurant.location_id);
         if (restaurant.location_id === undefined)
             throw new Error("Undefined location id.");
-        const index = this.#array.findIndex(x => x.location_id === restaurant.location_id);
+        const index = this.#findRestaurantWithId(restaurant.location_id);
         return index > -1;
     }
     sort(by)
