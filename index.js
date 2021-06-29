@@ -20,7 +20,7 @@ function renderRestaurantList(restaurantList,parentElement)
         tr.innerHTML += "<td>" + listToDisplay[i].distance + " km</td>";
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
-        checkbox.checked = false; // TODO: check the box if favorited.
+        checkbox.checked = window.favoritesList.includes(listToDisplay[i]); // TODO: check the box if favorited.
         checkbox.id = listToDisplay[i].location_id;
         checkbox.onchange = window.toggleFavorite;
         tr.appendChild(checkbox);
