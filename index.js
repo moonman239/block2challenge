@@ -33,7 +33,8 @@ window.toggleFavorite = function(event)
 {
     const location_id = event.target.id;
     // Get the restaurant corresponding to the passed id.
-    const restaurant = window.restaurantList.restaurantAt(location_id);
+    let list = window.viewingFavorites ? window.favoritesList : window.restaurantList;
+    const restaurant = list.restaurantAt(location_id);
     if (restaurant === undefined)
         throw new Error("Undefined restaurant.");
     console.log("Toggling restaurant " + restaurant.location_id + " name: " + restaurant.name);
@@ -44,9 +45,12 @@ window.toggleFavorite = function(event)
         window.favoritesList.removeRestaurant(restaurant);
     console.log("hey");
     window.favoritesList.saveToStorage("favorites");
+    if (window.viewingFavorites)
+        renderRestaurantList(window.favoritesList,restaurantsDiv);
 }
 window.go = async () => {
     console.log(restaurantsDiv);
+    window.viewingFavorites = false;
     if (document.getElementById("address").value !== "Current Location")
         await geocodeAddress(document.getElementById("address").value);
     window.restaurantList = await RestaurantList.fetchFromLatitudeLongitude(userPosition.coords.latitude,userPosition.coords.longitude);
