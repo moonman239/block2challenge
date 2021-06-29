@@ -5,6 +5,7 @@ window.getLocation = getLocation;
 window.geocodeAddress = geocodeAddress;
 window.restaurantsDiv = document.getElementById("restaurants");
 window.favoritesList = RestaurantList.initWithStorage("favorites");
+window.viewingFavorites = false;
 function renderRestaurantList(restaurantList,parentElement)
 {
     const table = document.createElement("table");
@@ -59,4 +60,23 @@ window.changeSort = function(select)
 {
     window.restaurantList.sort(select.value);
     renderRestaurantList(restaurantList,restaurantsDiv);
+}
+window.viewFavorites = function(button)
+{
+    window.viewingFavorites = !window.viewingFavorites;
+    if (!button)
+        throw new Error("Button not passed to function.");
+    if (window.viewingFavorites)
+    {
+        button.innerHTML = "View Results";
+        renderRestaurantList(window.favoritesList,restaurantsDiv);
+    }
+    else
+    {
+        button.innerHTML = "View Favorites";
+        if (window.restaurantList)
+            renderRestaurantList(window.restaurantList,restaurantsDiv);
+        else
+            restaurantsDiv.innerHTML = "No results displayed.";
+    }
 }
