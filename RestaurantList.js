@@ -4,6 +4,7 @@ const baseURL = "https://travel-advisor.p.rapidapi.com/restaurants/list-by-latln
 export class RestaurantList
 {
     #array; // Note: Refer to this using this.#array.
+    #key; // Key for localStorage.
     static ratingFunction(x,y)
             {
                 return (parseFloat(x.rating) > parseFloat(y.rating) || y.rating === undefined) ? -1 : 1;
@@ -15,21 +16,45 @@ export class RestaurantList
     constructor(restaurantArray)
     {
         this.#array = restaurantArray;
-        this.i = 0;
+        this.#key = "";
     }
-    static fromStorage(key)
+    setKey(key)
     {
-        const array = JSON.parse(localStorage.getItem(key));
-        return new RestaurantList(array);
+        this.#key = key;
     }
-    saveToStorage(key)
+    static initWithStorage(key)
     {
-        localStorage.setItem(key,JSON.stringify(this.#array));
+        const existingStorage = localStorage.getItem(key);
+        let returnValue = new RestaurantList([]);
+        if (existingStorage)
+        {
+            const array = JSON.parse(localStorage.getItem(key));
+            returnValue = new RestaurantList(array);
+        }
+        returnValue.setKey(key);
+        return returnValue;
+    }
+    saveToStorage()
+    {
+        console.log("Hello");
+        const json = JSON.stringify(this.#array);
+        console.log("Saving " + json);
+        localStorage.setItem(this.#key,json);
     }
     addRestaurant(restaurant)
     {
+        if (this.#findRestaurantWithId(restaurant.location_id) > -1)
+        // already exists.
+            throw new Error("Restaurant already exists in restaurantList.");
         this.#array.push(restaurant);
         console.log("Adding restaurant with location id " + restaurant.location_id);
+    }
+    removeRestaurant(restaurant)
+    {
+        const index = this.#findRestaurantWithId(restaurant.location_id);
+        if (index === -1)
+            throw new Error("Restaurant does not exist in restaurantList.");
+        this.#array.splice(index, 1);
     }
     static async fetchFromLatitudeLongitude(latitude,longitude)
     {

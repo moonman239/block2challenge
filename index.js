@@ -4,7 +4,7 @@ import {geocodeAddress,getLocation} from './utilities.js';
 window.getLocation = getLocation;
 window.geocodeAddress = geocodeAddress;
 window.restaurantsDiv = document.getElementById("restaurants");
-
+window.favoritesList = RestaurantList.initWithStorage("favorites");
 function renderRestaurantList(restaurantList,parentElement)
 {
     const table = document.createElement("table");
@@ -36,6 +36,13 @@ window.toggleFavorite = function(event)
     if (restaurant === undefined)
         throw new Error("Undefined restaurant.");
     console.log("Toggling restaurant " + restaurant.location_id + " name: " + restaurant.name);
+    // If restaurant is favorited, remove it from favorites. Otherwise, add it.
+    if (!window.favoritesList.includes(restaurant))
+        window.favoritesList.addRestaurant(restaurant);
+    else
+        window.favoritesList.removeRestaurant(restaurant);
+    console.log("hey");
+    window.favoritesList.saveToStorage("favorites");
 }
 window.go = async () => {
     console.log(restaurantsDiv);
