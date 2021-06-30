@@ -1,47 +1,10 @@
 <html>
     <head>
-        <title>The Foodie Traveler</title>
-        <style>
-            #header {
-                position: fixed;
-                top: 0px;
-                background-color: white;
-                opacity: 100%;
-                z-index: 500;
-            }
-            #displayContainer {
-                position:relative;
-                top:50px;
-            }
-        </style>
-        <script type="module" src="index.js"></script>
+        <title>The Foodie Traveler - Restaurant Finder</title>
     </head>
-    <body onload="init()">
-        <div id="header">
+    <body>
+        <h1>The Foodie Traveler - Restaurant Finder</h1>
         <input id="address" placeholder="Address"><button onclick="getLocation()" title="">Get Location</button>
-        Results per page:
-        <select onchange="setResultsPerPage(this)">
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="30">30</option>
-        </select>
         <button onclick="go()" id="go">Search</button>
-        Sort by: 
-        <select onchange="changeSort(this)" id="sort">
-            <option value="rating">Rating</option>
-            <option value="distance">Distance</option>
-        </select>
-        <button onclick="viewFavorites(this)">View favorites</button>
-        </div>
-        <div id="displayContainer">
-        <div id="restaurants">
-            </div>
-        <div id="pageSelector">
-            <button onclick="getPage(currentPage-1)" id="prevButton">Previous</button>
-            <div id="pages">
-            </div>
-            <button onclick="getPage(currentPage+1)" id="nextButton">Next</button>
-        </div>
-        </div>
     </body>
 </html>
