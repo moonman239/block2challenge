@@ -7,13 +7,16 @@ window.restaurantsDiv = document.getElementById("restaurants");
 window.favoritesList = RestaurantList.initWithStorage("favorites");
 window.viewingFavorites = false;
 window.resultsPerPage = 10;
-
-function renderRestaurantList(restaurantList,parentElement)
+function currentList()
+{
+    return viewingFavorites ? window.favoritesList : window.restaurantList;
+}
+function renderRestaurantList(restaurantList,parentElement,page=0)
 {
     const table = document.createElement("table");
     parentElement.innerHTML = "";
     parentElement.appendChild(table);
-    const start = 0;
+    const start = resultsPerPage * page;
     const listToDisplay = restaurantList.getRestaurants(resultsPerPage,start);
     for (const i in listToDisplay)
     {
@@ -38,8 +41,7 @@ window.toggleFavorite = function(event)
 {
     const location_id = event.target.id;
     // Get the restaurant corresponding to the passed id.
-    let list = window.viewingFavorites ? window.favoritesList : window.restaurantList;
-    const restaurant = list.restaurantAt(location_id);
+    const restaurant = currentList().restaurantAt(location_id);
     if (restaurant === undefined)
         throw new Error("Undefined restaurant.");
     console.log("Toggling restaurant " + restaurant.location_id + " name: " + restaurant.name);
@@ -90,9 +92,21 @@ window.viewFavorites = function(button)
     else
     {
         button.innerHTML = "View Favorites";
-        if (window.restaurantList)
-            renderRestaurantList(window.restaurantList,restaurantsDiv);
+        
+        if (currentList())
+            renderRestaurantList(currentList(),restaurantsDiv);
         else
             restaurantsDiv.innerHTML = "No results displayed.";
     }
+}
+function renderPageSelector()
+{
+    const pageSelector = document.getElementById("pageSelector");
+    // Calculate the number of pages to display.
+    const numPagesToDisplay = Math.ceil(currentList().numRestaurants() / resultsPerPage);
+}
+// Generate a page with the given page number.
+window.getPage = function(pageNum)
+{
+    renderRestaurantList(currentList(),restaurantsDiv,pageNum);
 }
