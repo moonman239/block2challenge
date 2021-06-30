@@ -13,6 +13,7 @@ function currentList()
 }
 function renderRestaurantList(restaurantList,parentElement,page=0)
 {
+    renderPageSelector();
     const table = document.createElement("table");
     parentElement.innerHTML = "";
     parentElement.appendChild(table);
@@ -102,8 +103,17 @@ window.viewFavorites = function(button)
 function renderPageSelector()
 {
     const pageSelector = document.getElementById("pageSelector");
-    // Calculate the number of pages to display.
+    
     const numPagesToDisplay = Math.ceil(currentList().numRestaurants() / resultsPerPage);
+    console.log("Displaying " + numPagesToDisplay + "pages.");
+    // For each page, display a button to go to that page.
+    for (let i=0; i<numPagesToDisplay; i++)
+    {
+        const button = document.createElement("input");
+        button.type = "button";
+        button.value = i + 1;
+        pageSelector.appendChild(button);
+    }
 }
 // Generate a page with the given page number.
 window.getPage = function(pageNum)

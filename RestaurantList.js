@@ -18,6 +18,7 @@ export class RestaurantList
         this.#array = restaurantArray;
         this.#key = "";
     }
+
     setKey(key)
     {
         this.#key = key;
@@ -109,5 +110,10 @@ export class RestaurantList
     {
         // TODO: code for the case when there are more restaurants than the API is returning.
         return this.#array.slice(start,start+count);
+    }
+    // Get the number of restaurants in the list.
+    numRestaurants()
+    {
+        return this.#array.length;
     }
 }
