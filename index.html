@@ -4,6 +4,13 @@
         <script type="module">
             import {getLocation} from './utilities.js';
             window.getLocation = getLocation;
+            window.go = async () =>
+            {
+                if (document.getElementById("address").value !== "Current Location")
+                    await geocodeAddress(document.getElementById("address").value);
+                localStorage.setItem("latitude",window.userPosition.coords.latitude);
+                localStorage.setItem("longitude",window.userPosition.coords.longitude);
+            }
         </script>
     </head>
     <body>
