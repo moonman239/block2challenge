@@ -18,6 +18,7 @@ function renderRestaurantList(restaurantList,parentElement,page=0)
     parentElement.innerHTML = "";
     parentElement.appendChild(table);
     const start = resultsPerPage * page;
+    console.log("Starting at " + start);
     const listToDisplay = restaurantList.getRestaurants(resultsPerPage,start);
     for (const i in listToDisplay)
     {
@@ -112,6 +113,7 @@ function renderPageSelector()
         const button = document.createElement("input");
         button.type = "button";
         button.value = i + 1;
+        button.onclick = () => getPage(i);
         pageSelector.appendChild(button);
     }
 }
