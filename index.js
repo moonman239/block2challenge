@@ -58,7 +58,14 @@ window.toggleFavorite = function(event)
     if (window.viewingFavorites)
         renderRestaurantList(window.favoritesList,restaurantsDiv);
 }
+function setButtonDisabled(buttonId,disabled)
+{
+    console.log(buttonId + " disabled: " + disabled);
+    document.getElementById(buttonId).disabled = disabled;
+}
 window.go = async () => {
+    setButtonDisabled("prevButton",true);
+    setButtonDisabled("nextButton",false);
     window.currentPage = 0;
     console.log(restaurantsDiv);
     window.viewingFavorites = false;
