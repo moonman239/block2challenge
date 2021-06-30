@@ -8,6 +8,17 @@ window.favoritesList = RestaurantList.initWithStorage("favorites");
 window.viewingFavorites = false;
 window.resultsPerPage = 10;
 window.currentPage = 0;
+window.init = function()
+{
+    const prevButton = document.getElementById("prevButton");
+    window.prevButton = prevButton;
+    const nextButton = document.getElementById("nextButton");
+    window.nextButton = nextButton;
+    prevButton.hidden = true;
+    prevButton.disabled = true;
+    nextButton.disabled = true;
+    nextButton.hidden = true;
+}
 function currentList()
 {
     return viewingFavorites ? window.favoritesList : window.restaurantList;
@@ -58,14 +69,12 @@ window.toggleFavorite = function(event)
     if (window.viewingFavorites)
         renderRestaurantList(window.favoritesList,restaurantsDiv);
 }
-function setButtonDisabled(buttonId,disabled)
-{
-    console.log(buttonId + " disabled: " + disabled);
-    document.getElementById(buttonId).disabled = disabled;
-}
+
 window.go = async () => {
-    setButtonDisabled("prevButton",true);
-    setButtonDisabled("nextButton",false);
+    window.prevButton.hidden = false;
+    window.nextButton.hidden = false;
+    window.prevButton.disabled = true;
+    window.nextButton.disabled = false;
     window.currentPage = 0;
     console.log(restaurantsDiv);
     window.viewingFavorites = false;
@@ -129,6 +138,7 @@ function renderPageSelector()
 // Generate a page with the given page number.
 window.getPage = function(pageNum)
 {
+
     currentPage = pageNum;
     renderRestaurantList(currentList(),restaurantsDiv);
 }
