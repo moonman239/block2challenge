@@ -1,6 +1,10 @@
 <html>
     <head>
         <title>The Foodie Traveler - Restaurant Finder</title>
+        <script type="module">
+            import {getLocation} from './utilities.js';
+            window.getLocation = getLocation;
+        </script>
     </head>
     <body>
         <h1>The Foodie Traveler - Restaurant Finder</h1>
