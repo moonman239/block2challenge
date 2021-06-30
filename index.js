@@ -17,6 +17,8 @@ function renderRestaurantList(restaurantList,parentElement)
     const listToDisplay = restaurantList.getRestaurants(resultsPerPage,start);
     for (const i in listToDisplay)
     {
+        if (listToDisplay[i].name === undefined)
+            continue;
         const tr = document.createElement("tr");
         tr.innerHTML += "<td><h3>" + listToDisplay[i].name
         + "</h3>" + listToDisplay[i].description + "</td>";
@@ -66,7 +68,8 @@ window.go = async () => {
 window.setResultsPerPage = function(select)
 {
     resultsPerPage = parseInt(select.value);
-    renderRestaurantList(restaurantList,restaurantsDiv);
+    if (typeof restaurantList !== "undefined")
+        renderRestaurantList(restaurantList,restaurantsDiv);
     // TODO: Implement pagination.
 }
 window.changeSort = function(select)
