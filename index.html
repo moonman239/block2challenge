@@ -5,6 +5,9 @@
             #header {
                 position: fixed;
                 top: 0px;
+                background-color: white;
+                opacity: 100%;
+                z-index: 500;
             }
             #displayContainer {
                 position:relative;
@@ -13,7 +16,7 @@
         </style>
         <script type="module" src="index.js"></script>
     </head>
-    <body class="flex-container" onload="init()">
+    <body onload="init()">
         <div id="header">
         <input id="address" placeholder="Address"><button onclick="getLocation()" title="">Get Location</button>
         Results per page:
