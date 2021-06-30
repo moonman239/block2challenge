@@ -105,7 +105,8 @@ window.viewFavorites = function(button)
 }
 function renderPageSelector()
 {
-    const pageSelector = document.getElementById("pageSelector");
+    const pageSelector = document.getElementById("pages");
+    pageSelector.innerHTML = "";
     const numPagesToDisplay = Math.ceil(currentList().numRestaurants() / resultsPerPage);
     console.log("Displaying " + numPagesToDisplay + "pages.");
     // For each page, display a button to go to that page.
