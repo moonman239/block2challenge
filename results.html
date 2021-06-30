@@ -12,9 +12,13 @@
                 padding-left: 5%;
                 background-color: white;
             }
-            #displayContainer {
+            #restaurants {
                 position:relative;
                 top:50px;
+            }
+            #pageSelector {
+                position: fixed;
+                bottom: 0px;
             }
         </style>
         <script type="module" src="index.js"></script>
@@ -36,7 +40,6 @@
         </select>
         <button onclick="viewFavorites(this)">View favorites</button>
         </div>
-        <div id="displayContainer">
         <div id="restaurants">
             </div>
         <div id="pageSelector">
@@ -44,7 +47,6 @@
             <div id="pages">
             </div>
             <button onclick="getPage(currentPage+1)" id="nextButton">Next</button>
-        </div>
         </div>
     </body>
 </html>
