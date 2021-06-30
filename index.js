@@ -7,17 +7,18 @@ window.restaurantsDiv = document.getElementById("restaurants");
 window.favoritesList = RestaurantList.initWithStorage("favorites");
 window.viewingFavorites = false;
 window.resultsPerPage = 10;
+window.currentPage = 0;
 function currentList()
 {
     return viewingFavorites ? window.favoritesList : window.restaurantList;
 }
-function renderRestaurantList(restaurantList,parentElement,page=0)
+function renderRestaurantList(restaurantList,parentElement)
 {
     renderPageSelector();
     const table = document.createElement("table");
     parentElement.innerHTML = "";
     parentElement.appendChild(table);
-    const start = resultsPerPage * page;
+    const start = resultsPerPage * currentPage;
     console.log("Starting at " + start);
     const listToDisplay = restaurantList.getRestaurants(resultsPerPage,start);
     for (const i in listToDisplay)
@@ -58,6 +59,7 @@ window.toggleFavorite = function(event)
         renderRestaurantList(window.favoritesList,restaurantsDiv);
 }
 window.go = async () => {
+    window.currentPage = 0;
     console.log(restaurantsDiv);
     window.viewingFavorites = false;
     if (document.getElementById("address").value !== "Current Location")
@@ -104,7 +106,6 @@ window.viewFavorites = function(button)
 function renderPageSelector()
 {
     const pageSelector = document.getElementById("pageSelector");
-    
     const numPagesToDisplay = Math.ceil(currentList().numRestaurants() / resultsPerPage);
     console.log("Displaying " + numPagesToDisplay + "pages.");
     // For each page, display a button to go to that page.
@@ -120,5 +121,6 @@ function renderPageSelector()
 // Generate a page with the given page number.
 window.getPage = function(pageNum)
 {
-    renderRestaurantList(currentList(),restaurantsDiv,pageNum);
+    currentPage = pageNum;
+    renderRestaurantList(currentList(),restaurantsDiv);
 }
