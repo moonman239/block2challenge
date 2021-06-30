@@ -19,6 +19,15 @@ window.init = function()
     prevButton.disabled = true;
     nextButton.disabled = true;
     nextButton.hidden = true;
+    if (localStorage.getItem("latitude") !== undefined)
+    {
+        if (localStorage.getItem("longitude") === undefined)
+            throw new Error("Undefined longitude.");
+        const latitude = JSON.parse(localStorage.getItem("latitude"));
+        const longitude = JSON.parse(localStorage.getItem("longitude"));
+        window.userPosition = {coords: {latitude: latitude, longitude: longitude}};
+        go();
+    }
 }
 function currentList()
 {
@@ -79,7 +88,7 @@ window.go = async () => {
     window.currentPage = 0;
     console.log(restaurantsDiv);
     window.viewingFavorites = false;
-    if (document.getElementById("address").value !== "Current Location")
+    if ((document.getElementById("address").value !== "Current Location") && document.getElementById("address").value !== "")
         await geocodeAddress(document.getElementById("address").value);
     window.restaurantList = await RestaurantList.fetchFromLatitudeLongitude(userPosition.coords.latitude,userPosition.coords.longitude);
     window.numPages = Math.ceil(currentList().numRestaurants() / resultsPerPage);
