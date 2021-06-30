@@ -1,0 +1,12 @@
+body {
+  background-color: pink;
+  color: white;
+}
+
+div {
+  display: flex;
+  background-color: beige;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+}
