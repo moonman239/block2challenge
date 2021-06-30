@@ -15,7 +15,12 @@
     </head>
     <body>
         <div id="header">
-        <input type="text" id="cuisine" placeholder="Cuisine"><input id="address" placeholder="Address"><button onclick="getLocation()" title="">Get Location</button>
+        <input id="address" placeholder="Address"><button onclick="getLocation()" title="">Get Location</button>
+        <select onchange="setResultsPerPage(this)">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        </select>
         <button onclick="go()" id="go">Search</button>
         <select onchange="changeSort(this)" id="sort">
             <option value="rating">Rating</option>

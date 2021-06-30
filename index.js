@@ -6,12 +6,15 @@ window.geocodeAddress = geocodeAddress;
 window.restaurantsDiv = document.getElementById("restaurants");
 window.favoritesList = RestaurantList.initWithStorage("favorites");
 window.viewingFavorites = false;
+window.resultsPerPage = 10;
+
 function renderRestaurantList(restaurantList,parentElement)
 {
     const table = document.createElement("table");
     parentElement.innerHTML = "";
     parentElement.appendChild(table);
-    const listToDisplay = restaurantList.getRestaurants(30);
+    const start = 0;
+    const listToDisplay = restaurantList.getRestaurants(resultsPerPage,start);
     for (const i in listToDisplay)
     {
         const tr = document.createElement("tr");
@@ -59,6 +62,12 @@ window.go = async () => {
     // Default to sorting by the selected sort.
     restaurantList.sort(document.getElementById("sort").value);
     renderRestaurantList(restaurantList,restaurantsDiv);
+}
+window.setResultsPerPage = function(select)
+{
+    resultsPerPage = parseInt(select.value);
+    renderRestaurantList(restaurantList,restaurantsDiv);
+    // TODO: Implement pagination.
 }
 window.changeSort = function(select)
 {
