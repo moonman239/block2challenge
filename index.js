@@ -8,6 +8,7 @@ window.favoritesList = RestaurantList.initWithStorage("favorites");
 window.viewingFavorites = false;
 window.resultsPerPage = 10;
 window.currentPage = 0;
+window.maxPages = 0;
 window.init = function()
 {
     const prevButton = document.getElementById("prevButton");
@@ -81,6 +82,7 @@ window.go = async () => {
     if (document.getElementById("address").value !== "Current Location")
         await geocodeAddress(document.getElementById("address").value);
     window.restaurantList = await RestaurantList.fetchFromLatitudeLongitude(userPosition.coords.latitude,userPosition.coords.longitude);
+    window.numPages = Math.ceil(currentList().numRestaurants() / resultsPerPage);
     if (restaurantList === undefined)
         throw new Error("No restaurant list was returned.");
     // Default to sorting by the selected sort.
@@ -123,10 +125,9 @@ function renderPageSelector()
 {
     const pageSelector = document.getElementById("pages");
     pageSelector.innerHTML = "";
-    const numPagesToDisplay = Math.ceil(currentList().numRestaurants() / resultsPerPage);
-    console.log("Displaying " + numPagesToDisplay + "pages.");
+    console.log("Displaying " + numPages + "pages.");
     // For each page, display a button to go to that page.
-    for (let i=0; i<numPagesToDisplay; i++)
+    for (let i=0; i<numPages; i++)
     {
         const button = document.createElement("input");
         button.type = "button";
@@ -138,7 +139,15 @@ function renderPageSelector()
 // Generate a page with the given page number.
 window.getPage = function(pageNum)
 {
-
     currentPage = pageNum;
+    console.log("Going to page " + pageNum);
     renderRestaurantList(currentList(),restaurantsDiv);
+    if (currentPage === window.numPages - 1)
+        nextButton.disabled = true;
+    else if (currentPage === 0)
+        prevButton.disabled = true;
+    if (currentPage > 0)
+        prevButton.disabled = false;
+    if (currentPage < window.numPages - 1)
+        nextButton.disabled = false;
 }
