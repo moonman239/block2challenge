@@ -10,6 +10,7 @@
                     await geocodeAddress(document.getElementById("address").value);
                 localStorage.setItem("latitude",window.userPosition.coords.latitude);
                 localStorage.setItem("longitude",window.userPosition.coords.longitude);
+                window.location.href = "results.html";
             }
         </script>
     </head>
