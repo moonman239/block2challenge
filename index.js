@@ -47,16 +47,25 @@ function renderRestaurantList(restaurantList,parentElement)
         if (listToDisplay[i].name === undefined)
             continue;
         const tr = document.createElement("tr");
-        tr.innerHTML += "<td><h3>" + listToDisplay[i].name
-        + "</h3>" + listToDisplay[i].description + "</td>";
-        tr.innerHTML += "<td>" + listToDisplay[i].rating + "</td>";
-        tr.innerHTML += "<td>" + listToDisplay[i].distance + " km</td>";
+        const td1 = document.createElement("td");
+        const h3 = document.createElement("h3");
+        h3.innerText = listToDisplay[i].name;
+        td1.appendChild(h3);
+        const td2 = document.createElement("td");
+        td2.innerText = listToDisplay[i].rating;
+        const td3 = document.createElement("td");
+        td3.innerText = listToDisplay[i].distance;
+        const td4 = document.createElement("td");
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.checked = window.favoritesList.includes(listToDisplay[i]); // TODO: check the box if favorited.
         checkbox.id = listToDisplay[i].location_id;
         checkbox.onchange = window.toggleFavorite;
-        tr.appendChild(checkbox);
+        td4.appendChild(checkbox);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        tr.appendChild(td4);
         table.appendChild(tr);
     }
 }
