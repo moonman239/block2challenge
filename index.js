@@ -32,6 +32,11 @@ function currentList()
 {
     return viewingFavorites ? window.favoritesList : window.restaurantList;
 }
+window.getNextPage = async () =>
+{
+    await restaurantList.fetchNextPage();
+    renderRestaurantList(restaurantList,restaurantsDiv);
+}
 function renderRestaurantList(restaurantList,parentElement)
 {
     renderPageSelector();

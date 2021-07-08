@@ -43,9 +43,15 @@ export class RestaurantList
             const restaurantCoords = {latitude: results[i].geometry.location.lat, longitude: results[i].geometry.location.lng};
             results[i].distance = distance(userPosition.coords,restaurantCoords);
         }
+        // Sanity check: Should different pages have the same restaurant?
+        for (const i in results)
+        {
+            if (this.#array === undefined)
+                break;
+            if (results[i].place_id === this.#array[i].place_id)
+                console.log("Place id already in array.");
+        }
         this.#array = results;
-        if (this.#array === undefined)
-            throw new Error("undefined array");
         this.#nextPageToken = json["next_page_token"];
             }
             catch (error)
