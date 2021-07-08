@@ -7,9 +7,7 @@ window.geocodeAddress = geocodeAddress;
 window.restaurantsDiv = document.getElementById("restaurants");
 window.favoritesList = RestaurantList.initWithStorage("favorites");
 window.viewingFavorites = false;
-window.resultsPerPage = 10;
-window.currentPage = 0;
-window.maxPages = 0;
+window.resultsPerPage = 20;
 window.init = function()
 {
     const prevButton = document.getElementById("prevButton");
