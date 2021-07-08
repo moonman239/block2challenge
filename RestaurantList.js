@@ -1,5 +1,4 @@
-const baseURL = "https://travel-advisor.p.rapidapi.com/restaurants/list-by-latlng?latitude=";
- const apiKey = "1167886aeemsh061eed0f807e535p17f6aajsnc70cd0d6bdaa";
+import { apiKey,placeSearchURL } from "./gmapsapi.js";
 
 export class RestaurantList
 {
@@ -15,6 +14,8 @@ export class RestaurantList
         }
     constructor(restaurantArray)
     {
+        if (restaurantArray === undefined)
+            throw new Error("Undefined array.");
         this.#array = restaurantArray;
         this.#key = "";
     }
@@ -44,36 +45,40 @@ export class RestaurantList
     }
     addRestaurant(restaurant)
     {
-        if (this.#findRestaurantWithId(restaurant.location_id) > -1)
+        if (this.#findRestaurantWithId(restaurant.place_id) > -1)
         // already exists.
             throw new Error("Restaurant already exists in restaurantList.");
         this.#array.push(restaurant);
-        console.log("Adding restaurant with location id " + restaurant.location_id);
+        console.log("Adding restaurant with location id " + restaurant.place_id);
     }
     removeRestaurant(restaurant)
     {
-        const index = this.#findRestaurantWithId(restaurant.location_id);
+        const index = this.#findRestaurantWithId(restaurant.place_id);
         if (index === -1)
             throw new Error("Restaurant does not exist in restaurantList.");
         this.#array.splice(index, 1);
     }
     static async fetchFromLatitudeLongitude(latitude,longitude)
     {
-        const url = baseURL + latitude + "&longitude=" + longitude + "&currency=USD&open_now=false&lunit=mi&lang=en_US";
-        console.log("Requesting url " + url);
+        // Create a GET query string to pass parameters.
+        const formData = new FormData();
+        let url = placeSearchURL + "?key=" + apiKey;
+        const keyword = "";
+        url += "&keyword=" + keyword;
+        url += "&opennow=" + "true";
+        url += "&location=" + latitude + "," + longitude;
+        url += "&radius=" + 50000;
+        url += "&type=restaurant";
         try {
          const response = await fetch(url, {
                     "method": "GET",
-                    "headers": {
-                        "x-rapidapi-key": apiKey,
-                        "x-rapidapi-host": "travel-advisor.p.rapidapi.com"
-                    }
                 });
         if (!response.ok)
                 throw new Error(response.statusText);
         const json = await response.json();
-        const data = json["data"];
-        return new RestaurantList(data);
+        console.log(json);
+        const results = json["results"];
+        return new RestaurantList(results);
             }
             catch (error)
             {
@@ -92,10 +97,10 @@ export class RestaurantList
     }
     includes(restaurant)
     {
-        console.log("Checking for restaurant with id " + restaurant.location_id);
-        if (restaurant.location_id === undefined)
+        console.log("Checking for restaurant with id " + restaurant.place_id);
+        if (restaurant.place_id === undefined)
             throw new Error("Undefined location id.");
-        const index = this.#findRestaurantWithId(restaurant.location_id);
+        const index = this.#findRestaurantWithId(restaurant.place_id);
         return index > -1;
     }
     sort(by)

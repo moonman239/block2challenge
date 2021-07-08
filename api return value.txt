@@ -1,0 +1,17 @@
+results: Array(20)
+0:
+business_status: "OPERATIONAL"
+geometry: {location: {…}, viewport: {…}}
+icon: "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png"
+name: "Grand Vista Hotel"
+opening_hours: {open_now: true}
+photos: [{…}]
+place_id: "ChIJieIdZOgdR4cRiKZAC5UnV4w"
+plus_code: {compound_code: "4F87+3Q Grand Junction, CO, USA", global_code: "85FH4F87+3Q"}
+rating: 4
+reference: "ChIJieIdZOgdR4cRiKZAC5UnV4w"
+scope: "GOOGLE"
+types: (7) ["night_club", "lodging", "bar", "restaurant", "food", "point_of_interest", "establishment"]
+user_ratings_total: 1977
+vicinity: "2790 Crossroads Boulevard, Grand Junction"
+__proto__: Object
