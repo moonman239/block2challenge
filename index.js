@@ -55,8 +55,7 @@ function renderRestaurantList(restaurantList,parentElement)
         const td2 = document.createElement("td");
         td2.innerText = listToDisplay[i].rating;
         const td3 = document.createElement("td");
-        const restaurantCoords = {latitude: listToDisplay[i].geometry.location.lat, longitude: listToDisplay[i].geometry.location.lng};
-        td3.innerText = distance(userPosition.coords,restaurantCoords);
+        td3.innerText = listToDisplay[i].distance;
         const td4 = document.createElement("td");
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";

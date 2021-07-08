@@ -1,3 +1,4 @@
+import distance from "./distance.js";
 import { apiKey,placeSearchURL } from "./gmapsapi.js";
 
 export class RestaurantList
@@ -78,6 +79,12 @@ export class RestaurantList
         const json = await response.json();
         console.log(json);
         const results = json["results"];
+        // Calculate distances from user to restaurants.
+        for (const i in results)
+        {
+            const restaurantCoords = {latitude: results[i].geometry.location.lat, longitude: results[i].geometry.location.lng};
+            results[i].distance = distance(userPosition.coords,restaurantCoords);
+        }
         return new RestaurantList(results);
             }
             catch (error)
