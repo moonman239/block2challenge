@@ -17,7 +17,6 @@ export class RestaurantList
     // Fetch the next page from Google.
     async fetchNextPage()
     {
-        console.log("Fetching next page.");
         // Assume userPosition has been set.
         let url = placeSearchURL + "?key=" + apiKey;
         const keyword = "";
@@ -26,8 +25,11 @@ export class RestaurantList
         url += "&location=" + userPosition.coords.latitude + "," + userPosition.coords.longitude;
         url += "&radius=" + 50000;
         url += "&type=restaurant";
+        url += "&rankby=prominence";
         if (this.#nextPageToken)
-            url += "&nextPageToken=" + this.#nextPageToken;
+            url += "&pagetoken=" + this.#nextPageToken;
+        else
+            console.log("No next page.");
         try {
          const response = await fetch(url, {
                     "method": "GET",
@@ -42,14 +44,6 @@ export class RestaurantList
         {
             const restaurantCoords = {latitude: results[i].geometry.location.lat, longitude: results[i].geometry.location.lng};
             results[i].distance = distance(userPosition.coords,restaurantCoords);
-        }
-        // Sanity check: Should different pages have the same restaurant?
-        for (const i in results)
-        {
-            if (this.#array === undefined)
-                break;
-            if (results[i].place_id === this.#array[i].place_id)
-                console.log("Place id already in array.");
         }
         this.#array = results;
         this.#nextPageToken = json["next_page_token"];
