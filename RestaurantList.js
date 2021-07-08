@@ -5,6 +5,7 @@ export class RestaurantList
 {
     #array; // Note: Refer to this using this.#array.
     #key; // Key for localStorage.
+    #nextPageToken; // token for the next page.
     static ratingFunction(x,y)
             {
                 return (parseFloat(x.rating) > parseFloat(y.rating) || y.rating === undefined) ? -1 : 1;
@@ -13,14 +14,45 @@ export class RestaurantList
         {
             return (parseFloat(x.distance) < parseFloat(y.distance) || y.distance === undefined) ? -1 : 1;
         }
-    constructor(restaurantArray)
+    // Fetch the next page from Google.
+    async fetchNextPage()
     {
-        if (restaurantArray === undefined)
-            throw new Error("Undefined array.");
-        this.#array = restaurantArray;
-        this.#key = "";
+        console.log("Fetching next page.");
+        // Assume userPosition has been set.
+        let url = placeSearchURL + "?key=" + apiKey;
+        const keyword = "";
+        url += "&keyword=" + keyword;
+        url += "&opennow=" + "true";
+        url += "&location=" + userPosition.coords.latitude + "," + userPosition.coords.longitude;
+        url += "&radius=" + 50000;
+        url += "&type=restaurant";
+        if (this.#nextPageToken)
+            url += "&nextPageToken=" + this.#nextPageToken;
+        try {
+         const response = await fetch(url, {
+                    "method": "GET",
+                });
+        if (!response.ok)
+                throw new Error(response.statusText);
+        const json = await response.json();
+        console.log(json);
+        const results = json["results"];
+        // Calculate distances from user to restaurants.
+        for (const i in results)
+        {
+            const restaurantCoords = {latitude: results[i].geometry.location.lat, longitude: results[i].geometry.location.lng};
+            results[i].distance = distance(userPosition.coords,restaurantCoords);
+        }
+        this.#array = results;
+        if (this.#array === undefined)
+            throw new Error("undefined array");
+        this.#nextPageToken = json["next_page_token"];
+            }
+            catch (error)
+            {
+                console.error(error);
+            }
     }
-
     setKey(key)
     {
         this.#key = key;
@@ -58,39 +90,6 @@ export class RestaurantList
         if (index === -1)
             throw new Error("Restaurant does not exist in restaurantList.");
         this.#array.splice(index, 1);
-    }
-    static async fetchFromLatitudeLongitude(latitude,longitude)
-    {
-        // Create a GET query string to pass parameters.
-        const formData = new FormData();
-        let url = placeSearchURL + "?key=" + apiKey;
-        const keyword = "";
-        url += "&keyword=" + keyword;
-        url += "&opennow=" + "true";
-        url += "&location=" + latitude + "," + longitude;
-        url += "&radius=" + 50000;
-        url += "&type=restaurant";
-        try {
-         const response = await fetch(url, {
-                    "method": "GET",
-                });
-        if (!response.ok)
-                throw new Error(response.statusText);
-        const json = await response.json();
-        console.log(json);
-        const results = json["results"];
-        // Calculate distances from user to restaurants.
-        for (const i in results)
-        {
-            const restaurantCoords = {latitude: results[i].geometry.location.lat, longitude: results[i].geometry.location.lng};
-            results[i].distance = distance(userPosition.coords,restaurantCoords);
-        }
-        return new RestaurantList(results);
-            }
-            catch (error)
-            {
-                console.error(error);
-            }
     }
     #findRestaurantWithId(restaurantId)
     {

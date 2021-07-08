@@ -59,7 +59,14 @@ function renderRestaurantList(restaurantList,parentElement)
         const td4 = document.createElement("td");
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
+        try
+        {
         checkbox.checked = window.favoritesList.includes(listToDisplay[i]); // TODO: check the box if favorited.
+        }
+        catch (e)
+        {
+            console.error(e);
+        }
         checkbox.id = listToDisplay[i].location_id;
         checkbox.onchange = window.toggleFavorite;
         td4.appendChild(checkbox);
@@ -100,7 +107,8 @@ window.go = async () => {
     window.viewingFavorites = false;
     if ((document.getElementById("address").value !== "Current Location") && document.getElementById("address").value !== "")
         await geocodeAddress(document.getElementById("address").value);
-    window.restaurantList = await RestaurantList.fetchFromLatitudeLongitude(userPosition.coords.latitude,userPosition.coords.longitude);
+    window.restaurantList = new RestaurantList();
+    await restaurantList.fetchNextPage();
     window.numPages = Math.ceil(currentList().numRestaurants() / resultsPerPage);
     if (restaurantList === undefined)
         throw new Error("No restaurant list was returned.");
