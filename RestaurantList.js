@@ -18,6 +18,10 @@ export class RestaurantList
         {
             return (parseFloat(x.distance) < parseFloat(y.distance) || y.distance === undefined) ? -1 : 1;
         }
+    // Check if list has next page.
+    hasNextPage() {
+        return this.#nextPageToken !== undefined;
+    }
     // Fetch the next page from Google.
     async fetchNextPage()
     {
@@ -33,7 +37,7 @@ export class RestaurantList
         if (this.#nextPageToken)
             url += "&pagetoken=" + this.#nextPageToken;
         else
-            console.log("No next page.");
+            console.log("No next page indicated.");
         try {
          const response = await fetch(url, {
                     "method": "GET",
@@ -51,6 +55,8 @@ export class RestaurantList
         }
         this.#array = results;
         this.#nextPageToken = json["next_page_token"];
+        if (!this.#nextPageToken)
+            console.log("This page has no next page.");
             }
             catch (error)
             {

@@ -34,8 +34,10 @@ function currentList()
 }
 window.getNextPage = async () =>
 {
-    await restaurantList.fetchNextPage();
+    await currentList().fetchNextPage();
     document.getElementById("prevButton").disabled = false;
+    if (!currentList().hasNextPage())
+        document.getElementById("nextButton").disabled = true;
     renderRestaurantList(restaurantList,restaurantsDiv);
 }
 function renderRestaurantList(restaurantList,parentElement)
