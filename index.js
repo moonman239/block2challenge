@@ -35,6 +35,7 @@ function currentList()
 window.getNextPage = async () =>
 {
     await restaurantList.fetchNextPage();
+    document.getElementById("prevButton").disabled = false;
     renderRestaurantList(restaurantList,restaurantsDiv);
 }
 function renderRestaurantList(restaurantList,parentElement)
