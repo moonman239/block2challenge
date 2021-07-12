@@ -34,7 +34,7 @@ function currentList()
 }
 window.getNextPage = async () =>
 {
-    await currentList().fetchNextPage();
+    await currentList().getNextPage();
     document.getElementById("prevButton").disabled = false;
     if (!currentList().hasNextPage())
         document.getElementById("nextButton").disabled = true;

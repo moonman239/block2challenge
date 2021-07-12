@@ -7,6 +7,7 @@ export class RestaurantList
     #key; // Key for localStorage.
     #nextPageToken; // token for the next page.
     #pages; // array for pages.
+    #currentPageNumber; // current page number.
     constructor(array=[])
     {
         this.#array = array;
@@ -14,6 +15,7 @@ export class RestaurantList
             this.#pages = [array];
         else
             this.#pages = [];
+        this.#currentPageNumber = 0;
     }
     static ratingFunction(x,y)
             {
@@ -25,7 +27,7 @@ export class RestaurantList
         }
     // Check if list has next page.
     hasNextPage() {
-        return this.#nextPageToken !== undefined;
+        return this.#nextPageToken !== undefined || this.#currentPageNumber < this.#pages.length - 1;
     }
     // Fetch the next page from Google.
     async fetchNextPage()
@@ -70,6 +72,24 @@ export class RestaurantList
             {
                 console.error(error);
             }
+    }
+    // Get the next page.
+    async getNextPage()
+    {
+        // Check if this is the last page in the array.
+        const lastPageIndex = this.#pages.length - 1;
+        if (!this.hasNextPage())
+            return 0;
+        if (this.#currentPageNumber === lastPageIndex)
+        {
+            console.log("Fetching next page.");
+            await this.fetchNextPage();
+        }
+        else
+        {
+            console.log("Retrieving next page from memory.");
+            this.#array = this.#pages[this.#currentPageNumber];
+        }
     }
     setKey(key)
     {
