@@ -40,15 +40,18 @@ window.getNextPage = async () =>
         document.getElementById("nextButton").disabled = true;
     renderRestaurantList(restaurantList,restaurantsDiv);
 }
+window.getPreviousPage = function()
+{
+    currentList().getPreviousPage();
+    renderRestaurantList(restaurantList,restaurantsDiv);
+}
 function renderRestaurantList(restaurantList,parentElement)
 {
     renderPageSelector();
     const table = document.createElement("table");
     parentElement.innerHTML = "";
     parentElement.appendChild(table);
-    const start = resultsPerPage * currentPage;
-    console.log("Starting at " + start);
-    const listToDisplay = restaurantList.getRestaurants(resultsPerPage,start);
+    const listToDisplay = restaurantList.getRestaurants(resultsPerPage,0);
     for (const i in listToDisplay)
     {
         if (listToDisplay[i].name === undefined)

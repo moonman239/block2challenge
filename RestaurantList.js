@@ -73,6 +73,15 @@ export class RestaurantList
                 console.error(error);
             }
     }
+    // Get the previous page.
+    getPreviousPage()
+    {
+        const page = this.#pages[this.#currentPageNumber - 1];
+        if (!page)
+            throw new Error("undefined page.");
+        this.#array = page;
+        this.#currentPageNumber -= 1;
+    }
     // Get the next page.
     async getNextPage()
     {
@@ -88,8 +97,13 @@ export class RestaurantList
         else
         {
             console.log("Retrieving next page from memory.");
-            this.#array = this.#pages[this.#currentPageNumber];
+            const nextPage = this.#pages[this.#currentPageNumber + 1];
+            if (nextPage === undefined)
+                throw new Error("undefined page");
+            else
+                this.#array = nextPage;
         }
+        this.#currentPageNumber += 1;
     }
     setKey(key)
     {
