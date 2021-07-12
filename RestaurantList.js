@@ -6,9 +6,14 @@ export class RestaurantList
     #array; // Note: Refer to this using this.#array.
     #key; // Key for localStorage.
     #nextPageToken; // token for the next page.
+    #pages; // array for pages.
     constructor(array=[])
     {
         this.#array = array;
+        if (array.length > 0)
+            this.#pages = [array];
+        else
+            this.#pages = [];
     }
     static ratingFunction(x,y)
             {
@@ -54,6 +59,9 @@ export class RestaurantList
             results[i].distance = distance(userPosition.coords,restaurantCoords);
         }
         this.#array = results;
+        this.#pages.push(results);
+        console.log("New array length: " + this.#pages.length);
+        console.log(this.#pages);
         this.#nextPageToken = json["next_page_token"];
         if (!this.#nextPageToken)
             console.log("This page has no next page.");
