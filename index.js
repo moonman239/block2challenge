@@ -70,7 +70,7 @@ function renderRestaurantList(restaurantList,parentElement)
         {
             console.error(e);
         }
-        checkbox.id = listToDisplay[i].location_id;
+        checkbox.id = listToDisplay[i].place_id;
         checkbox.onchange = window.toggleFavorite;
         td4.appendChild(checkbox);
         tr.appendChild(td1);

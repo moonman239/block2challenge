@@ -6,6 +6,10 @@ export class RestaurantList
     #array; // Note: Refer to this using this.#array.
     #key; // Key for localStorage.
     #nextPageToken; // token for the next page.
+    constructor(array=[])
+    {
+        this.#array = array;
+    }
     static ratingFunction(x,y)
             {
                 return (parseFloat(x.rating) > parseFloat(y.rating) || y.rating === undefined) ? -1 : 1;
@@ -93,12 +97,15 @@ export class RestaurantList
     }
     #findRestaurantWithId(restaurantId)
     {
-        return this.#array.findIndex(x => x.location_id === restaurantId);
+        if (this.#array === undefined)
+            throw new Error("Undefined array.");
+        return this.#array.findIndex(x => x.place_id === restaurantId);
     }
     restaurantAt(restaurant_id)
     {
         const index = this.#findRestaurantWithId(restaurant_id);
-        console.log("Restaurant index: " + index);
+        if (index < 0)
+            throw new Error("Could not find restaurant id " + restaurant_id);
         return this.#array[index];
     }
     includes(restaurant)
