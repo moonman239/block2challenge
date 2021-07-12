@@ -44,6 +44,7 @@ window.getPreviousPage = function()
 {
     currentList().getPreviousPage();
     renderRestaurantList(restaurantList,restaurantsDiv);
+    document.getElementById("nextButton").disabled = false;
 }
 function renderRestaurantList(restaurantList,parentElement)
 {
