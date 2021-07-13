@@ -73,13 +73,21 @@ export class RestaurantList
                 console.error(error);
             }
     }
+    #previousPage()
+    {
+        const page = this.#pages[this.#currentPageNumber - 1];
+        return page;
+    }
+    hasPreviousPage()
+    {
+        return this.#previousPage() !== undefined;
+    }
     // Get the previous page.
     getPreviousPage()
     {
-        const page = this.#pages[this.#currentPageNumber - 1];
-        if (!page)
-            throw new Error("undefined page.");
-        this.#array = page;
+        if (!this.hasPreviousPage())
+            throw new Error("undefined page");
+        this.#array = this.#previousPage();
         this.#currentPageNumber -= 1;
     }
     // Get the next page.
