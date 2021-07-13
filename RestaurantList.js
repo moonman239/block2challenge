@@ -134,7 +134,7 @@ export class RestaurantList
     saveToStorage()
     {
         console.log("Hello");
-        const json = JSON.stringify(this.#array);
+        const json = JSON.stringify(this.#pages);
         console.log("Saving " + json);
         localStorage.setItem(this.#key,json);
     }
