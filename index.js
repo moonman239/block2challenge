@@ -61,9 +61,13 @@ function renderRestaurantList(restaurantList,parentElement)
             continue;
         const tr = document.createElement("tr");
         const td1 = document.createElement("td");
+        const a = document.createElement("a");
+        a.href = "details.html";
+        a.onclick = () => alert("Hi!");
         const h3 = document.createElement("h3");
         h3.innerText = listToDisplay[i].name;
-        td1.appendChild(h3);
+        a.appendChild(h3);
+        td1.appendChild(a);
         const td2 = document.createElement("td");
         td2.innerText = listToDisplay[i].rating;
         const td3 = document.createElement("td");
