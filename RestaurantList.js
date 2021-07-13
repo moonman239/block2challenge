@@ -60,6 +60,8 @@ export class RestaurantList
             const restaurantCoords = {latitude: results[i].geometry.location.lat, longitude: results[i].geometry.location.lng};
             results[i].distance = distance(userPosition.coords,restaurantCoords);
         }
+        if (!results)
+            throw new Error("Empty array!");
         this.#array = results;
         this.#pages.push(results);
         console.log("New array length: " + this.#pages.length);
