@@ -65,7 +65,7 @@ function renderRestaurantList(restaurantList,parentElement)
         a.href = "details.html";
         a.onclick = () => {
             const placeId = listToDisplay[i].place_id;
-            alert(placeId);
+            localStorage.setItem("place_id",placeId);
         }
 
         const h3 = document.createElement("h3");
