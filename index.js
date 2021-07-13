@@ -63,7 +63,11 @@ function renderRestaurantList(restaurantList,parentElement)
         const td1 = document.createElement("td");
         const a = document.createElement("a");
         a.href = "details.html";
-        a.onclick = () => alert("Hi!");
+        a.onclick = () => {
+            const placeId = listToDisplay[i].place_id;
+            alert(placeId);
+        }
+
         const h3 = document.createElement("h3");
         h3.innerText = listToDisplay[i].name;
         a.appendChild(h3);
