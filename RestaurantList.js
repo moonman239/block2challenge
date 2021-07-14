@@ -1,6 +1,6 @@
 import distance from "./distance.js";
 import { apiKey,placeSearchURL } from "./gmapsapi.js";
-
+// TODO: Once a restaurant list has been loaded, save it with an expiration date.
 export class RestaurantList
 {
     #array; // Note: Refer to this using this.#array.
