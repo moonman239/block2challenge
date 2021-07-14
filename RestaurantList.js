@@ -8,6 +8,7 @@ export class RestaurantList
     #nextPageToken; // token for the next page.
     #pages; // array for pages.
     #currentPageNumber; // current page number.
+    #expirationDate; // date when current data expires.
     constructor(array=[])
     {
         this.#array = array;
@@ -27,7 +28,7 @@ export class RestaurantList
         }
     // Check if list has next page.
     hasNextPage() {
-        return this.#nextPageToken !== undefined || this.#currentPageNumber < this.#pages.length - 1;
+        return this.#nextPageToken !== undefined || this.#currentPageNumber < this.#pages.length - 1 || this.#pages.length === 0;
     }
     // Fetch the next page from Google.
     async fetchNextPage()
@@ -97,23 +98,26 @@ export class RestaurantList
     {
         // Check if this is the last page in the array.
         const lastPageIndex = this.#pages.length - 1;
+        console.log("Next page?" + this.hasNextPage());
         if (!this.hasNextPage())
             return 0;
-        if (this.#currentPageNumber === lastPageIndex)
+        const nextPageNumber = this.#currentPageNumber + 1;
+        if (this.#currentPageNumber >= lastPageIndex)
         {
             console.log("Fetching next page.");
             await this.fetchNextPage();
+            this.saveToStorage();
         }
         else
         {
-            console.log("Retrieving next page from memory.");
-            const nextPage = this.#pages[this.#currentPageNumber + 1];
+            console.log("Retrieving next page (page " + nextPageNumber + ") from memory.");
+            const nextPage = this.#pages[nextPageNumber];
             if (nextPage === undefined)
                 throw new Error("undefined page");
             else
                 this.#array = nextPage;
         }
-        this.#currentPageNumber += 1;
+        this.#currentPageNumber = nextPageNumber;
     }
     setKey(key)
     {
@@ -121,6 +125,7 @@ export class RestaurantList
     }
     static initWithStorage(key)
     {
+        console.log("Storing with key " + key);
         const existingStorage = localStorage.getItem(key);
         let returnValue = new RestaurantList([]);
         if (existingStorage)

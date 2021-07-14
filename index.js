@@ -116,7 +116,14 @@ window.toggleFavorite = function(event)
     if (window.viewingFavorites)
         renderRestaurantList(window.favoritesList,restaurantsDiv);
 }
-
+function roundToDecimalPlaces(x,decimalPlaces)
+{
+    if (decimalPlaces < 0)
+        throw new Error("Negative decimal places.");
+    const a = 10**decimalPlaces;
+    const b = Math.round(x * a) / a;
+    return b;
+}
 window.go = async () => {
     window.prevButton.hidden = false;
     window.nextButton.hidden = false;
@@ -127,8 +134,10 @@ window.go = async () => {
     window.viewingFavorites = false;
     if ((document.getElementById("address").value !== "Current Location") && document.getElementById("address").value !== "")
         await geocodeAddress(document.getElementById("address").value);
-    window.restaurantList = new RestaurantList();
-    await restaurantList.fetchNextPage();
+    const roundedLatitude = roundToDecimalPlaces(parseFloat(window.userPosition.coords.latitude),2);
+    const roundedLongitude = roundToDecimalPlaces(parseFloat(window.userPosition.coords.longitude),2);
+    window.restaurantList = RestaurantList.initWithStorage(roundedLatitude + "," + roundedLongitude);
+    await restaurantList.getNextPage();
     window.numPages = Math.ceil(currentList().numRestaurants() / resultsPerPage);
     if (restaurantList === undefined)
         throw new Error("No restaurant list was returned.");
