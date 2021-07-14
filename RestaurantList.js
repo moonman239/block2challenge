@@ -123,23 +123,30 @@ export class RestaurantList
     {
         this.#key = key;
     }
-    static initWithStorage(key)
+    setExpirationDate(expirationDate)
+    {
+        this.#expirationDate = expirationDate;
+    }
+    static initWithStorage(key,expirationDate=undefined)
     {
         console.log("Storing with key " + key);
         const existingStorage = localStorage.getItem(key);
         let returnValue = new RestaurantList([]);
         if (existingStorage)
         {
-            const array = JSON.parse(localStorage.getItem(key));
-            returnValue = new RestaurantList(array);
+            const object = JSON.parse(localStorage.getItem(key));
+            if (object.expirationDate > new Date() || object.expirationDate === null)
+                returnValue = new RestaurantList(object.pages[0]);
         }
         returnValue.setKey(key);
+        returnValue.setExpirationDate(expirationDate);
         return returnValue;
     }
     saveToStorage()
     {
         console.log("Hello");
-        const json = JSON.stringify(this.#pages);
+        const object = {pages: this.#pages,expirationDate: this.#expirationDate};
+        const json = JSON.stringify(object);
         console.log("Saving " + json);
         localStorage.setItem(this.#key,json);
     }
