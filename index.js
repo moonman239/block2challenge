@@ -54,7 +54,7 @@ function renderRestaurantList(restaurantList,parentElement)
     const table = document.createElement("table");
     parentElement.innerHTML = "";
     parentElement.appendChild(table);
-    const listToDisplay = restaurantList.getRestaurants(resultsPerPage,0);
+    const listToDisplay = restaurantList.getRestaurants(resultsPerPage);
     for (const i in listToDisplay)
     {
         if (listToDisplay[i].name === undefined)
