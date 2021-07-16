@@ -53,7 +53,8 @@ export class RestaurantList
         if (!response.ok)
                 throw new Error(response.statusText);
         const json = await response.json();
-        console.log(json);
+        if (json.status === "INVALID_REQUEST")
+                throw new Error("Invalid Request, are you clicking too quickly?");
         const results = json["results"];
         // Calculate distances from user to restaurants.
         for (const i in results)
@@ -90,6 +91,7 @@ export class RestaurantList
     {
         if (!this.hasPreviousPage())
             throw new Error("undefined page");
+        console.log("Previous page: " + this.#previousPage());
         this.#array = this.#previousPage();
         this.#currentPageNumber -= 1;
     }
