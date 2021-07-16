@@ -86,12 +86,21 @@ export class RestaurantList
     {
         return this.#previousPage() !== undefined;
     }
+    // assert that the next/previous page and the current page are not the same.
+    #assertPage(page)
+    {
+        for (const i in page)
+        {
+            if (page[i].place_id === this.#array[i].place_id)
+                throw new Error("Previous/next page is actually same page!");
+        }
+    }
     // Get the previous page.
     getPreviousPage()
     {
         if (!this.hasPreviousPage())
             throw new Error("undefined page");
-        console.log("Previous page: " + this.#previousPage());
+        this.#assertPage(this.#previousPage);
         this.#array = this.#previousPage();
         this.#currentPageNumber -= 1;
     }
@@ -117,7 +126,10 @@ export class RestaurantList
             if (nextPage === undefined)
                 throw new Error("undefined page");
             else
+            {
+                this.#assertPage(nextPage);
                 this.#array = nextPage;
+            }
         }
         this.#currentPageNumber = nextPageNumber;
     }
