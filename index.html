@@ -1,9 +1,9 @@
 <html>
     <head>
         <title>The Foodie Traveler - Restaurant Finder</title>
+        <script type="module" src="utilities.js"></script>
         <script type="module">
-            import {getLocation} from './utilities.js';
-            window.getLocation = getLocation;
+            
             window.go = async () =>
             {
                 if (document.getElementById("address").value !== "Current Location")

@@ -1,9 +1,6 @@
 
 import {RestaurantList} from './RestaurantList.js';
-import {geocodeAddress,getLocation} from './utilities.js';
 import distance from './distance.js';
-window.getLocation = getLocation;
-window.geocodeAddress = geocodeAddress;
 window.restaurantsDiv = document.getElementById("restaurants");
 window.favoritesList = RestaurantList.initWithStorage("favorites");
 window.viewingFavorites = false;
