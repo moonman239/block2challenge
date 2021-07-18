@@ -1,3 +1,4 @@
+import {apiKey} from './gmapsapi.js';
 function navigationPromise()
 {
     return new Promise((resolve,reject) =>
@@ -6,7 +7,7 @@ function navigationPromise()
     })
 }
 
-export async function getLocation() 
+window.getLocation = async function()
 {
     document.getElementById("go").disabled = true;
     const position = await navigationPromise();
@@ -16,17 +17,20 @@ export async function getLocation()
      window.userPosition = position;
             }
 
-export async function geocodeAddress(address)
+window.geocodeAddress = async function(address)
     {
-        let response = await fetch("https://forward-reverse-geocoding.p.rapidapi.com/v1/search?q=" + address + "%20USA&format=json&accept-language=en&polygon_threshold=0.0", {
-            "method": "GET",
-            "headers": {
-                "x-rapidapi-key": "1167886aeemsh061eed0f807e535p17f6aajsnc70cd0d6bdaa",
-                "x-rapidapi-host": "forward-reverse-geocoding.p.rapidapi.com"
-                    }
-                })
+        let response = await fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + apiKey);
             let json = await response.json();
-            const userPosition = {coords : {latitude: json[0].lat, longitude: json[0].lon}};
+            const result = json.results[0];
+            if (result === undefined)
+            {
+                console.log(json);
+                alert("could not find location");
+                return 0;
+            }
+            const location = result.geometry.location;
+            console.log(location);
+            const userPosition = {coords : {latitude: location.lat, longitude: location.lng}};
             if (userPosition.coords.latitude === undefined || userPosition.coords.longitude === undefined)
                 throw new Error("Undefined latitude and longitude.");
             window.userPosition = userPosition;
