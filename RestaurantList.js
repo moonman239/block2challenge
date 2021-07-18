@@ -113,7 +113,8 @@ export class RestaurantList
         if (!this.hasNextPage())
             return 0;
         const nextPageNumber = this.#currentPageNumber + 1;
-        if (this.#currentPageNumber >= lastPageIndex)
+        // check if next page is in memory.
+        if (nextPageNumber >= this.#pages.length)
         {
             console.log("Fetching next page.");
             await this.fetchNextPage();
@@ -123,6 +124,8 @@ export class RestaurantList
         {
             console.log("Retrieving next page (page " + nextPageNumber + ") from memory.");
             const nextPage = this.#pages[nextPageNumber];
+            if (nextPage.length === 0)
+                throw new Error("empty page.");
             if (nextPage === undefined)
                 throw new Error("undefined page");
             else
@@ -168,7 +171,9 @@ export class RestaurantList
         if (this.#findRestaurantWithId(restaurant.place_id) > -1)
         // already exists.
             throw new Error("Restaurant already exists in restaurantList.");
-        this.#pages[0].push(restaurant);
+        if (!this.#pages[this.#currentPageNumber])
+            this.#pages[this.#currentPageNumber] = [];
+        this.#pages[this.#currentPageNumber].push(restaurant);
         console.log("Adding restaurant with location id " + restaurant.place_id);
     }
     removeRestaurant(restaurant)
@@ -181,7 +186,7 @@ export class RestaurantList
     #findRestaurantWithId(restaurantId)
     {
         if (this.#pages[this.#currentPageNumber]=== undefined)
-            throw new Error("Undefined array.");
+            return -1;
         return this.#pages[this.#currentPageNumber].findIndex(x => x.place_id === restaurantId);
     }
     restaurantAt(restaurant_id)

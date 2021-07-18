@@ -133,7 +133,7 @@ window.go = async () => {
         await geocodeAddress(document.getElementById("address").value);
     const roundedLatitude = roundToDecimalPlaces(parseFloat(window.userPosition.coords.latitude),2);
     const roundedLongitude = roundToDecimalPlaces(parseFloat(window.userPosition.coords.longitude),2);
-    window.restaurantList = RestaurantList.initWithStorage(roundedLatitude + "," + roundedLongitude);
+    window.restaurantList = new RestaurantList([]);
     await restaurantList.getNextPage();
     window.numPages = currentList().numPages();
     if (restaurantList === undefined)
