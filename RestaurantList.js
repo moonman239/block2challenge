@@ -161,6 +161,8 @@ export class RestaurantList
     saveToStorage()
     {
         console.log("Hello");
+        if (this.#pages.length === 0)
+            throw new Error("no pages to save.");
         const object = {pages: this.#pages,expirationDate: this.#expirationDate};
         const json = JSON.stringify(object);
         console.log("Saving " + json);
