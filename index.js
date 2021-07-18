@@ -122,6 +122,7 @@ function roundToDecimalPlaces(x,decimalPlaces)
     return b;
 }
 window.go = async () => {
+    try {
     window.prevButton.hidden = false;
     window.nextButton.hidden = false;
     window.prevButton.disabled = true;
@@ -139,6 +140,11 @@ window.go = async () => {
     if (restaurantList === undefined)
         throw new Error("No restaurant list was returned.");
     renderRestaurantList(restaurantList,restaurantsDiv);
+    }
+    catch (e)
+    {
+        alert("Whoops! An error occurred.");
+    }
 }
 window.setResultsPerPage = function(select)
 {
