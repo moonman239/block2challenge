@@ -138,11 +138,9 @@ window.go = async () => {
     const roundedLongitude = roundToDecimalPlaces(parseFloat(window.userPosition.coords.longitude),2);
     window.restaurantList = RestaurantList.initWithStorage(roundedLatitude + "," + roundedLongitude);
     await restaurantList.getNextPage();
-    window.numPages = Math.ceil(currentList().numRestaurants() / resultsPerPage);
+    window.numPages = currentList().numPages();
     if (restaurantList === undefined)
         throw new Error("No restaurant list was returned.");
-    // Default to sorting by the selected sort.
-    restaurantList.sort(document.getElementById("sort").value);
     renderRestaurantList(restaurantList,restaurantsDiv);
 }
 window.setResultsPerPage = function(select)
