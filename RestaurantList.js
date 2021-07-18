@@ -111,7 +111,10 @@ export class RestaurantList
         const lastPageIndex = this.#pages.length - 1;
         console.log("Next page?" + this.hasNextPage());
         if (!this.hasNextPage())
+        {
+            console.error("no next page indicated.");
             return 0;
+        }
         const nextPageNumber = this.#currentPageNumber + 1;
         // check if next page is in memory.
         if (nextPageNumber >= this.#pages.length)
