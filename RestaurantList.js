@@ -151,7 +151,7 @@ export class RestaurantList
         if (existingStorage)
         {
             const object = JSON.parse(localStorage.getItem(key));
-            if (object.expirationDate > new Date() || object.expirationDate === null)
+            if (object.expirationDate > new Date() || object.expirationDate === undefined)
                 returnValue = new RestaurantList(object.pages[0]);
         }
         returnValue.setKey(key);
@@ -173,6 +173,8 @@ export class RestaurantList
         if (this.#findRestaurantWithId(restaurant.place_id) > -1)
         // already exists.
             throw new Error("Restaurant already exists in restaurantList.");
+        if (this.#currentPageNumber < 0)
+            this.#currentPageNumber = 0;
         if (!this.#pages[this.#currentPageNumber])
             this.#pages[this.#currentPageNumber] = [];
         this.#pages[this.#currentPageNumber].push(restaurant);
@@ -209,6 +211,8 @@ export class RestaurantList
     // gets 'count' restaurants starting at 'start'
     getRestaurants(count,start=0)
     {
+        if (this.#currentPageNumber === -1)
+            this.#currentPageNumber = 0;
         // TODO: code for the case when there are more restaurants than the API is returning.
         return this.#pages[this.#currentPageNumber].slice(start,start+count);
     }
